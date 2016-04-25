@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://cxf.apache.org/jaxws 
+	http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<!-- 导入资源 -->
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-http.xml" />
+	<!-- 
+		<jaxws:endpoint id="classImpl"
+		实现的Ws服务类,#前缀表示使用Bean
+		implementor="org.wy.service.impl.UserServiceImpl"
+		endpintName名,前缀字母加:表示使用指定命名空间
+		endpointName="e:HelloEndpointCustomized"
+		服务名,前缀字母加:表示使用指定命名空间
+		serviceName="s:HelloServiceCustomized"
+		服务地址
+		address="http://localhost:8080/test"
+		命名空间
+		xmlns:e="http://service.jaxws.cxf.apache.org/endpoint"
+		xmlns:s="http://service.jaxws.cxf.apache.org/service"/>
+	-->
+	
+	<!-- 使用new -->
+	<jaxws:endpoint id="appClient" implementor="com.cloudcode.client.cxf.impl.appClient" address="/appClient" >
+	</jaxws:endpoint>
+	<!-- 使用bean -->
+
+
+</beans>

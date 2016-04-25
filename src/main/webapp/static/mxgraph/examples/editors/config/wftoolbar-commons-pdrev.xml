@@ -1,0 +1,4 @@
+<mxDefaultToolbar>
+	<add as="save" action="saveMxgraph" icon="../static/mxgraph/examples/editors/images/save.gif" />
+	<add as="show" action="show" icon="../static/mxgraph/examples/editors/images/preview.gif" />
+</mxDefaultToolbar>

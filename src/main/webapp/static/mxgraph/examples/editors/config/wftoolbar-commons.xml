@@ -1,0 +1,93 @@
+<mxDefaultToolbar>
+	<add as="save" action="saveMxgraph" icon="../static/mxgraph/examples/editors/images/save.gif" />
+	<add as="保存并部署" action="saveMxgraphDeploy" icon="../static/imgs/wf/table_save.png" />
+	<add as="show" action="show" icon="../static/mxgraph/examples/editors/images/preview.gif" />
+	<add as="select" mode="select" icon="../static/mxgraph/examples/editors/images/select.gif" />
+	<!-- <add as="print" action="print" icon="../static/mxgraph/examples/editors/images/print.gif" />
+	<add as="exportImage" action="exportImage" icon="../static/mxgraph/examples/editors/images/image.gif" />
+	<add as="pan" mode="pan" icon="../static/mxgraph/examples/editors/images/pan.gif" /> -->
+	<add as="connect" mode="connect"
+		icon="../static/mxgraph/examples/editors/images/straight.gif"><![CDATA[
+		function (editor)
+		{
+			if (editor.defaultEdge != null)
+			{
+				editor.defaultEdge.style = 'noEdgeStyle=1';
+			}
+		}
+	]]></add>
+	<add as="connect" mode="connect"
+		icon="../static/mxgraph/examples/editors/images/connect.gif"><![CDATA[
+		function (editor)
+		{
+			if (editor.defaultEdge != null)
+			{
+				editor.defaultEdge.style = 'edgeStyle=segmentEdgeStyle';
+			}
+		}
+	]]></add>
+	<add as="connect" mode="connect"
+		icon="../static/mxgraph/examples/editors/images/arrow.gif"><![CDATA[
+		function (editor)
+		{
+			if (editor.defaultEdge != null)
+			{
+				editor.defaultEdge.style = 'arrowEdge';
+			}
+		}
+	]]></add>
+	<add as="undo" action="undo" icon="../static/mxgraph/examples/editors/images/undo.gif" />
+	<add as="redo" action="redo" icon="../static/mxgraph/examples/editors/images/redo.gif" />
+	<!-- <add as="cut" action="cut" icon="../static/mxgraph/examples/editors/images/cut.gif" />
+	<add as="copy" action="copy" icon="../static/mxgraph/examples/editors/images/copy.gif" />
+	<add as="paste" action="paste" icon="../static/mxgraph/examples/editors/images/paste.gif" />
+	<add as="delete" action="delete" icon="../static/mxgraph/examples/editors/images/delete.gif" /> -->
+	<!-- <add as="group" action="group" icon="../static/mxgraph/examples/editors/images/group.gif"/> <add as="ungroup" 
+		action="ungroup" icon="../static/mxgraph/examples/editors/images/ungroup.gif"/> <br/><hr/> <add as="Swimlane" 
+		template="swimlane" icon="../static/mxgraph/examples/editors/images/swimlane.gif" /> <add as="Task" template="task" 
+		icon="../static/mxgraph/examples/editors/images/rectangle.gif" /> <add as="Subprocess" template="subprocess" 
+		icon="../static/mxgraph/examples/editors/images/rounded.gif" /> <add as="Ellipse" template="shape" style="ellipse" 
+		icon="../static/mxgraph/examples/editors/images/ellipse.gif" /> <add as="Rhombus" template="shape" style="rhombus" 
+		icon="../static/mxgraph/examples/editors/images/rhombus.gif" /> -->
+	<add as="开始节点" template="startEvent" style="symbol;image=../static/mxgraph/examples/editors/wfimg/start.gif"
+		icon="../static/mxgraph/examples/editors/images/symbols/small_event.gif" />
+	<add as="结束节点" template="endEvent"
+		style="symbol;image=../static/mxgraph/examples/editors/wfimg/end.gif" icon="../static/mxgraph/examples/editors/images/symbols/small_event_end.gif" />
+	<add as="任务节点" template="userTask" style="symbol;image=../static/mxgraph/examples/editors/wfimg/userTask.gif" icon="../static/mxgraph/examples/editors/wfimg/userTask_x.gif" />
+	<add as="分支" template="inclusiveGateway"
+		style="symbol;image=../static/mxgraph/examples/editors/wfimg/inclusiveGateway.gif" icon="../static/mxgraph/examples/editors/images/symbols/small_inclusive.gif" />
+	<add as="并行分支" template="parallelGateway" style="symbol;image=../static/mxgraph/examples/editors/wfimg/parallelGateway.gif"
+		icon="../static/mxgraph/examples/editors/images/symbols/small_fork.gif" />
+	<add as="单一分支" template="exclusiveGateway" style="symbol;image=../static/mxgraph/examples/editors/wfimg/exclusiveGateway.gif" icon="../static/mxgraph/examples/editors/images/rhombus.gif" />
+	<!-- <br /> <hr /> <add as="Event (Intermediate)" template="symbol" style="symbol;image=../static/mxgraph/examples/editors/images/symbols/event_intermediate.png" 
+		icon="../static/mxgraph/examples/editors/images/symbols/small_event_intermediate.gif" /> <add as="Timer" template="symbol" 
+		style="symbol;image=../static/mxgraph/examples/editors/images/symbols/timer.png" icon="../static/mxgraph/examples/editors/images/symbols/small_timer.gif" 
+		/> <add as="Message" template="symbol" style="symbol;image=../static/mxgraph/examples/editors/images/symbols/message.png" 
+		icon="../static/mxgraph/examples/editors/images/symbols/small_message.gif" /> <add as="Message (Intermediate)" 
+		template="symbol" style="symbol;image=../static/mxgraph/examples/editors/images/symbols/message_intermediate.png" 
+		icon="../static/mxgraph/examples/editors/images/symbols/small_message_intermediate.gif" /> <add as="Message 
+		(End)" template="symbol" style="symbol;image=../static/mxgraph/examples/editors/images/symbols/message_end.png" 
+		icon="../static/mxgraph/examples/editors/images/symbols/small_message_end.gif" /> <add as="Terminate" template="symbol" 
+		style="symbol;image=../static/mxgraph/examples/editors/images/symbols/terminate.png" icon="../static/mxgraph/examples/editors/images/symbols/small_terminate.gif" 
+		/> <add as="Link" template="symbol" style="symbol;image=../static/mxgraph/examples/editors/images/symbols/link.png" 
+		icon="../static/mxgraph/examples/editors/images/symbols/small_link.gif" /> <add as="Rule" template="symbol" 
+		style="symbol;image=../static/mxgraph/examples/editors/images/symbols/rule.png" icon="../static/mxgraph/examples/editors/images/symbols/small_rule.gif" 
+		/> <add as="Multiple" template="symbol" style="symbol;image=../static/mxgraph/examples/editors/images/symbols/multiple.png" 
+		icon="../static/mxgraph/examples/editors/images/symbols/small_multiple.gif" /> <add as="Error" template="symbol" 
+		style="symbol;image=../static/mxgraph/examples/editors/images/symbols/error.png" icon="../static/mxgraph/examples/editors/images/symbols/small_error.gif" 
+		/> <add as="Cancel (End)" template="symbol" style="symbol;image=../static/mxgraph/examples/editors/images/symbols/cancel_end.png" 
+		icon="../static/mxgraph/examples/editors/images/symbols/small_cancel_end.gif" /> <add as="Cancel (Intermediate)" 
+		template="symbol" style="symbol;image=../static/mxgraph/examples/editors/images/symbols/cancel_intermediate.png" 
+		icon="../static/mxgraph/examples/editors/images/symbols/small_cancel_intermediate.gif" /> <add as="Merge" template="symbol" 
+		style="symbol;image=../static/mxgraph/examples/editors/images/symbols/merge.png" icon="../static/mxgraph/examples/editors/images/symbols/small_merge.gif" 
+		/> -->
+	<!-- <add as="fit" action="fit" icon="../static/mxgraph/examples/editors/images/zoom.gif" />
+	<add as="zoomIn" action="zoomIn" icon="../static/mxgraph/examples/editors/images/zoomin.gif" />
+	<add as="zoomOut" action="zoomOut" icon="../static/mxgraph/examples/editors/images/zoomout.gif" />
+	<add as="actualSize" action="actualSize" icon="../static/mxgraph/examples/editors/images/zoomactual.gif" />
+	<add as="zoom" action="zoom" icon="../static/mxgraph/examples/editors/images/zoom.gif" />
+	<add as="outline" action="toggleOutline" icon="../static/mxgraph/examples/editors/images/outline.gif" /> -->
+	<add as="tasks" action="toggleTasks" icon="../static/mxgraph/examples/editors/images/tasks.gif" />
+	<!-- <add as="help" action="toggleHelp" icon="../static/mxgraph/examples/editors/images/help.gif" /> -->
+	<add as="console" action="toggleConsole" icon="../static/mxgraph/examples/editors/images/console.gif" />
+</mxDefaultToolbar>

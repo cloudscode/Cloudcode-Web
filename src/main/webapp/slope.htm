@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>斜率</title>
+    	<link rel="stylesheet" href="./static/jquery/ui/bootstrap/css/custom-theme/jquery-ui-1.10.3.custom.css">
+		<script type="text/javascript" src="./static/jquery/jquery-1.10.2.js"></script>
+		<script src="./static/jquery/ui/jquery-ui-1.10.3.custom.js" type="text/javascript"></script>
+		<style type="text/css">
+${demo.css}
+  </style>
+    <style type="text/css">
+select {font-family:Verdana,sans-serif,宋体;width:150px;}	
+
+		</style>
+		<script type="text/javascript">
+		var data=null;
+		function loadCode(){
+			var r = $(this).children('option:selected').val();
+			$.ajax({
+				async:false,
+		        url: './futurestypes/queryData',
+		        type: 'get',
+		        dataType: 'json',
+		        data:{'exchange':$("#exchange").val(),'groupType':$("#groupType").val()},
+		        success: function(result) {
+		        	var rows=result.rows;
+			        $("#codes").empty();
+			        for(var i=0;i<rows.length;i++){
+			        	$("#codes").append("<option >"+rows[i].code+"</option>"); 
+			        }
+		        }
+		    });
+		}
+$(function () {
+	loadData(GetQueryString('futuresType'));
+	$("#groupType").change(function(e,o){
+		loadCode();
+	});
+	$("#codes").change(function(e,o){
+		var r = $(this).children('option:selected').val();
+		$("#code").val(r);
+	});
+	$("#exchange").change(function(e,o){
+		var r = $(this).children('option:selected').val();
+
+		$("#groupType").empty();
+		if(r=="1"){
+		  $("#groupType").append("<option  selected='selected' value='1'>PVC</option>"); 
+		       $("#groupType").append("<option value='2'>棕油</option>"); 
+		       $("#groupType").append("<option value='3'>豆二</option>"); 
+		       $("#groupType").append("<option value='4'>豆粕</option>"); 
+		       $("#groupType").append("<option value='5'>铁矿石</option>"); 
+		       $("#groupType").append("<option value='6'>鸡蛋</option>"); 
+		        $("#groupType").append("<option value='7'>塑料</option>"); 
+		         $("#groupType").append("<option value='8'>PP</option>"); 
+		          $("#groupType").append("<option value='9'>纤维板</option>"); 
+		           $("#groupType").append("<option value='10'>胶合板</option>"); 
+		            $("#groupType").append("<option value='11'>豆油</option>"); 
+		             $("#groupType").append("<option value='12'>玉米</option>"); 
+		              $("#groupType").append("<option value='13'>豆一</option>"); 
+		               $("#groupType").append("<option value='14'>焦炭</option>"); 
+		                $("#groupType").append("<option value='15'>焦煤</option>"); 
+		                 $("#groupType").append("<option value='16'>玉米淀粉</option>"); 
+		}else
+			if(r=="2"){         
+				$("#groupType").append("<option value='17'>PTA</option>"); 
+				$("#groupType").append(" <option value='18'>菜油</option>"); 
+				$("#groupType").append("<option value='19'>菜籽</option>"); 
+				$("#groupType").append(" <option value='20'>菜粕</option>"); 
+				$("#groupType").append(" <option value='21'>动力煤</option>"); 
+				$("#groupType").append("<option value='22'>强麦</option>"); 
+				$("#groupType").append("<option value='23'>粳稻</option>"); 
+				$("#groupType").append("  <option value='24'>白糖</option>"); 
+				$("#groupType").append("<option value='25'>棉花</option>"); 
+				$("#groupType").append("<option value='26'>早籼稻</option>"); 
+				$("#groupType").append(" <option value='27'>甲醇</option>"); 
+				$("#groupType").append("<option value='28'>晚籼稻</option>"); 
+				$("#groupType").append("<option value='29'>硅铁</option>"); 
+				$("#groupType").append("<option value='30'>锰硅</option>"); 
+			
+			}else if(r=="3"){
+			$("#groupType").append("<option value='31'>燃油</option>"); 
+		    $("#groupType").append("<option value='32'>沪铝</option>"); 
+		    $("#groupType").append("<option value='33'>橡胶</option>"); 
+		    $("#groupType").append("<option value='34'>沪锌</option>"); 
+		    $("#groupType").append("<option value='35'>沪铜</option>"); 
+		    $("#groupType").append("<option value='36'>黄金</option>"); 
+		                           $("#groupType").append("<option value='37'>螺纹钢</option>"); 
+		                            $("#groupType").append("<option value='38'>线材</option>"); 
+		                            $("#groupType").append(" <option value='39'>沪铅</option>"); 
+		                              $("#groupType").append("<option value='40'>白银</option>"); 
+		                     $("#groupType").append("<option value='41'>沥青</option>"); 
+		                      $("#groupType").append("<option value='42'>热轧卷板</option>"); 
+		                       $("#groupType").append("<option value='43'>沪锡</option>"); 
+		                        $("#groupType").append("<option value='44'>沪镍</option>"); 
+			}else if(r=="4"){
+			 $("#groupType").append("<option value='45'>期指</option>"); 
+		     $("#groupType").append(" <option value='46'>5年期国债期货</option>"); 
+		     $("#groupType").append("<option value='47'>10年期国债期货</option>");                         
+		                            
+			}else if(r=="5"){
+			   $("#groupType").append("<option value='48'>现货商品</option>"); 
+			}else if(r=="6"){
+			    $("#groupType").append("<option value='49'>有色金属</option>"); 
+			}
+		});
+	loadCode();
+	var r = $("#codes").children('option:selected').val();
+	$("#code").val(r);
+	$('#updateButton').click( function() {
+		loadData($('#code').val());
+	});
+});
+function GetQueryString(name) {
+	   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i");
+	   var r = window.location.search.substr(1).match(reg);
+	   if (r!=null) return unescape(r[2]); return null;
+	}
+
+function loadData(code){
+	
+	$.ajax({
+		async:false,
+        url: './sharingPlans/LoadData?futuresType='+code,
+        type: 'get',
+        dataType: 'json',
+        data:null,
+        success: function(result) {
+        	data=result;
+        }
+    });
+    $('#containerLine').highcharts({
+        title: {
+            text: '价格',
+            x: -20 //center
+        },
+        subtitle: {
+            text: '时间',
+            x: -20
+        },
+        xAxis: {
+            categories: data.categories
+        },
+        yAxis: {
+            title: {
+                text: '价格'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: data.seriesPices
+    });
+    $('#container').highcharts({
+        title: {
+            text: '斜率',
+            x: -20 //center
+        },
+        subtitle: {
+            text: '时间',
+            x: -20
+        },
+        xAxis: {
+            categories: data.series[0].remindList
+        },
+        yAxis: {
+            title: {
+                text: '斜率'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: data.series
+    });
+    $('#containerSlope').highcharts({
+        title: {
+            text: '斜率',
+            x: -20 //center
+        },
+        subtitle: {
+            text: '时间',
+            x: -20
+        },
+        xAxis: {
+            categories: data.categories
+        },
+        yAxis: {
+            title: {
+                text: '斜率'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: data.seriesSlope
+    });
+    $('#seriesDiff').highcharts({
+        title: {
+            text: '差价',
+            x: -20 //center
+        },
+        subtitle: {
+            text: '时间',
+            x: -20
+        },
+        xAxis: {
+            categories: data.categories
+        },
+        yAxis: {
+            title: {
+                text: '差价'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: data.seriesDiff
+    });
+    $( "#dialog" ).html('');
+    var obj =  data.series[0].remindList;
+    if(obj[obj.length-1]){
+	    $( "#dialog" ).html(obj[obj.length-1]);
+	    $( "#dialog" ).dialog();
+    }
+}
+
+setInterval ("loadData($('#code').val())", 30000);
+
+		</script>
+	</head>
+	<body>
+<script src="./static/plugin/highcharts/js/highcharts.js"></script>
+<script src="./static/plugin/highcharts/js/modules/exporting.js"></script>
+
+ <div class="form-group">
+    <label for="inputEmail3" class="col-sm-2 control-label">交易所：</label>
+   
+      <select name="exchange" id="exchange">
+      <option  selected="selected" value="1">大连商品交易所</option>
+      <option value="2">郑州商品交易所</option>
+      <option value="3">上海期货交易所</option>
+      <option value="4">中国金融期货交易所</option>
+      <option value="5">渤海商品交易所</option>
+      <option value="6">泛亚有色金属交易所</option>
+    </select>
+
+     <label for="inputPassword3" class="col-sm-2 control-label">类别：</label>
+   
+      <select name="groupType" id="groupType">
+      <option  selected="selected" value='1'>PVC</option>
+      <option value='2'>棕油</option>
+      <option value='3'>豆二</option>
+      <option value='4'>豆粕</option>
+      <option value='5'>铁矿石</option>
+      <option value='6'>鸡蛋</option>
+      <option value='7'>塑料</option>
+      <option value='8'>PP</option>
+      <option value='9'>纤维板</option>
+      <option value='10'>胶合板</option>
+      <option value='11'>豆油</option>
+      <option value='12'>玉米</option>
+      <option value='13'>豆一</option>
+      <option value='14'>焦炭</option>
+      <option value='15'>焦煤</option>
+      <option value='16'>玉米淀粉</option>
+    </select>	
+
+  <label for="inputPassword3" class="col-sm-2 control-label">代码：</label>
+    <select name="codes" id="codes">
+      
+    </select>	
+    <label for="inputEmail3" class="col-sm-2 control-label">代码：</label>   
+      <input type="text" name="code" class="form-control" id="code" placeholder="代码">  
+  <button type="button" id="updateButton" style="width: 80px;height: 24px;">加载...</button>
+</div>
+<div id="containerLine" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="containerSlope" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="containerDiff" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<div id="dialog" title="消息提示"></div>
+	</body>
+</html>
