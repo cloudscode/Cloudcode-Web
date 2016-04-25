@@ -17,7 +17,7 @@
         http://www.springframework.org/schema/util
         http://www.springframework.org/schema/util/spring-util-3.1.xsd"
 	default-lazy-init="false">
-	<import resource="applicationContext-cxf.xml" />
+	<!-- <import resource="applicationContext-cxf.xml" /> -->
 	<bean
 		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 	<context:annotation-config />
