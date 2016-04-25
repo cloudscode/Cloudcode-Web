@@ -29,8 +29,8 @@
 	-->
 	
 	<!-- 使用new -->
-	<jaxws:endpoint id="appClient" implementor="com.cloudcode.client.cxf.impl.appClient" address="/appClient" >
-	</jaxws:endpoint>
+	<!-- <jaxws:endpoint id="appClient" implementor="com.cloudcode.client.cxf.impl.appClient" address="/appClient" >
+	</jaxws:endpoint> -->
 	<!-- 使用bean -->
 
 
