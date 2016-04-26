@@ -50,7 +50,7 @@
     <servlet-name>service</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-  <servlet>
+  <!--  <servlet>
     <servlet-name>CXFService</servlet-name>
     <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
@@ -58,7 +58,7 @@
   <servlet-mapping>
     <servlet-name>CXFService</servlet-name>
     <url-pattern>/cxfService/*</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>-->
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
