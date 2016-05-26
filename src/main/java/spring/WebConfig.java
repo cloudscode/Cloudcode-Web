@@ -19,7 +19,11 @@ import com.cloudcode.framework.annotation.ModuleConfig;
 @Import({   
 	com.cloudcode.framework.ProjectConfig.class,	
 	com.cloudcode.lottery.ProjectConfig.class,
-	com.cloudcode.push.ProjectConfig.class
+	com.cloudcode.push.ProjectConfig.class,
+	com.cloudcode.usersystem.ProjectConfig.class,
+	com.cloudcode.menu.ProjectConfig.class,
+	com.cloudcode.organization.ProjectConfig.class,
+	com.cloudcode.tk.ProjectConfig.class
 })
 public class WebConfig {
 	@Autowired
