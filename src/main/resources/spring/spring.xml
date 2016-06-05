@@ -142,4 +142,9 @@
 		</property>
 		<property name="maxRows" value="10000"></property>
 	</bean>
+	
+	<!-- 国际化 -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+  		<property name="basename" value="classpath:config/messages" />
+ 	</bean>
 </beans>

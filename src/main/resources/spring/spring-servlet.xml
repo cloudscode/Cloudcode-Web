@@ -30,7 +30,7 @@
     </mvc:annotation-driven>
     			
 	<!-- 视图解释类 -->  
-	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<bean  id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
     	<property name="prefix" value="/app/"/>
     	<property name="suffix" value=".jsp"/>
@@ -65,13 +65,7 @@
 	<mvc:resources mapping="/Admin/assets/**" location="/Admin/assets/" />
 	<mvc:resources mapping="/Admin/js/**" location="/Admin/js/" />
 	<mvc:resources mapping="/Admin/css/**" location="/Admin/css/" />
-	<bean id="jspViewResolver"
-        class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="viewClass"
-            value="org.springframework.web.servlet.view.JstlView" />
-        <property name="prefix" value="/WEB-INF/view/" />
-        <property name="suffix" value=".jsp" />
-    </bean>
+
 	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
 		<property name="prefix"> <value>/pages/</value> </property> <property name="suffix"> 
 		<value>.jsp</value> </property> <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/> 
