@@ -24,7 +24,9 @@
 		<security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
 
 		<security:csrf token-repository-ref="csrfTokenRepository" />
-		
+		 <security:headers>
+         <security:frame-options disabled="true"></security:frame-options>
+        </security:headers>
 	</security:http> 
     
     <bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">  
