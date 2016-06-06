@@ -45,9 +45,7 @@
 	</bean>
 	<context:component-scan base-package="com.cloudcode" />
 	<mvc:annotation-driven />
-	<mvc:default-servlet-handler />
-	<!-- Forwards requests to the "/" resource to the default view -->
-	<mvc:view-controller path="/" view-name="index" />
+	<mvc:default-servlet-handler />	
 	<mvc:resources mapping="/resources/**" location="/resources/" />	
 	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 请求映射 -->
 	<bean
