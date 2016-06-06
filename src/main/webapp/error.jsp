@@ -69,7 +69,7 @@
       			  <% 
 			          if (iErrorCode == 403){
 			      %>        
-					  <h3>HTTP Status 403 - 禁止访问</h3>  
+					  <h3>HTTP Status 403 - 禁止访问1</h3>  
 					  ${errDesc}		    
 			      <%        
 			          }else if (iErrorCode == 404){
