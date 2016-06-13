@@ -1,4 +1,22 @@
 var ajaxframework = function (){};
+$.ajaxframework = $.ajaxframework || {};
+$.ajaxframework.widgetArray = ['button', 'text', 'date', 'textarea'];
+$.ajaxframework.widgetVar = '';
+for (var i in  $.ajaxframework.widgetArray) {
+    if (i != "0") {
+        $.ajaxframework.widgetVar += ',';
+    }
+    $.ajaxframework.widgetVar += '[ftype=' + $.ajaxframework.widgetArray[i] + ']';
+}
+
+Array.prototype.inArray = function(e) {
+    for (var i in this) {
+        if (this[i] == e) {
+            return true;
+        }
+    }
+    return false;
+}
 /**
  * 创建一个对话框
  * @param title
@@ -146,3 +164,371 @@ ajaxframework.postForm = function(url, params, newWindow){
     form.remove();
 };
 
+$.ajaxframework.getTime = function() {
+    if ($.ajaxframework.time) {
+        $.ajaxframework.time++;
+    } else {
+        $.ajaxframework.time = new Date().getTime();
+    }
+    return $.ajaxframework.time;
+}
+$.ajaxframework.validation = {
+    validation : function(form) {
+        form.validationEngine({
+                    scroll : false
+                });
+    },
+    check : function(formId, callback) {
+        if ($("#" + formId).validationEngine('validate')) {
+            return callback($("#" + formId).getValue());
+        } else {
+            Dialog.errormsg("验证失败！！");
+        }
+    },
+    getValidate : function(config) {
+        var validate = '';
+        if (config.required) {
+            validate += 'required,';
+        }
+        if (config.maxSize) {
+            validate += 'maxSize[' + config.maxSize + '],';
+        }
+        if (config.minSize) {
+            validate += 'minSize[' + config.minSize + '],';
+        }
+        if (config.min) {
+            validate += 'min[' + config.min + '],';
+        }
+        if (config.max) {
+            validate += 'max[' + config.max + '],';
+        }
+        if (config.email) {
+            validate += 'custom[email],';
+        }
+        if (config.integer) {
+            validate += 'custom[integer],';
+        }
+        if (config.number) {
+            validate += 'custom[number],';
+        }
+        if (config.yw) {
+            validate += 'custom[onlyLetterSp],';
+        }
+        if (config.image) {
+            validate += 'custom[image],';
+        }
+
+        if (config.validateClass) {
+            validate += config.validateClass + ','
+        }
+
+        if (validate) {
+            validate = validate.substr(0, validate.length - 1);
+            return 'validate[' + validate + ']';
+        }
+        return '';
+    }
+}
+$.ajaxframework.getConfig = function(input) {
+    var config = input.attr('config');
+    if (config) {
+        config = $.ajaxframework.toObject('{' + config + '}');
+    } else {
+        var configVar = input.attr('configVar');
+        if (configVar) {
+            var configVarObj = eval(configVar);
+            var obj = {};
+            for (var p in configVarObj) {
+                obj[p] = configVarObj[p];
+            }
+            config = obj;
+        }
+    }
+    if (config == null || config == '') {
+        config = {};
+    }
+    config.ftype = input.attr("ftype");
+    config = $.extend(config, input.data());
+    return config;
+}
+$.ajaxframework.toObject = function(string) {
+    try {
+        var j = "(" + string + ")";
+        return eval(j);
+    } catch (e) {
+        try {
+            console.log(e);
+        } catch (e) {
+        }
+    }
+};
+$.ajaxframework.value = {
+    getAreaValue : function(form) {
+        var spanList = [];
+        form.find($.ajaxframework.widgetVar).each(function() {
+                    spanList.push($(this));
+                });
+        var values = {};
+        for (var i = 0; i < spanList.length; i++) {
+            var span = spanList[i];
+            var config = $.ajaxframework.getConfig(span);
+            var value = $.ajaxframework.value.getValueBySpan(span, config);
+            values[config.name] = value;
+        }
+        return values;
+    },
+    getValueBySpan : function(span, config) {
+        if (config == null) {
+            config = $.ajaxframework.getConfig(span);
+        }
+        var ftype = config.ftype;
+        var value = '';
+        if (span.getConfig('toView')) {
+            return span.getConfig('value');
+        }
+        if ($.ajaxframework[ftype] && $.ajaxframework[ftype].getValue) {
+            value = $.ajaxframework[ftype].getValue(span, config);
+        }
+        return value;
+    },
+    setAreaValue : function(form, values, formConfig) {
+        form.find($.ajaxframework.widgetVar).each(function() {
+            var config = $.ajaxframework.getConfig($(this));
+            $.ajaxframework.value.setValueBySpan($(this), values[config.name], config);
+            if (formConfig.view == true) {
+                $(this).toView(config);
+            }
+        });
+    },
+    setValueBySpan : function(span, value, config) {
+        if (typeof value == "object") {
+            if ($.isEmptyObject(value)) {
+                value = null;
+            }
+        }
+        if (config == null) {
+            config = $.ajaxframework.getConfig(span);
+        }
+        var ftype = config.ftype;
+        span.setConfig({
+                    value : value
+                });
+        if ($.ajaxframework[ftype] && $.ajaxframework[ftype].setValue) {
+            $.ajaxframework[ftype].setValue(span, config, value);
+        }
+    }
+}
+$.ajaxframework.text = {
+    render : function(span, config) {
+        span.empty();
+        var div = $('<div class="ui-field-contain"></div>');
+        var id = $.ajaxframework.getTime();
+        if (config.text) {
+            var requiredHtml = '';
+            if (config.required) {
+                requiredHtml = '<font color=red>*</font>';
+            }
+            div.append('<label for="' + id + '" >' + config.text + requiredHtml
+                    + '</label>');
+        }
+        var $input = null;
+        if (config.password) {
+            $input = $('<input  data-clear-btn="true" type="password" id="'
+                    + id + '" />');
+        } else {
+            $input = $('<input type="text" class="form-control" id="' + id
+                    + '" />');
+        }
+        if (config.placeholder) {
+            $input.attr('placeholder', config.placeholder);
+        }
+        if (config.name) {
+            $input.attr('name', config.name);
+        }
+        $input.data('span', span);
+        if (config.onClick) {
+            $input.click(function() {
+                        config.onClick($(this).data('span'));
+                    });
+        }
+        if (config.onBlur) {
+            $input.blur(function() {
+                        config.onBlur($(this).data('span'));
+                    });
+        }
+        if (config.onFocus) {
+            $input.focus(function() {
+                        config.onFocus($(this).data('span'));
+                    });
+        }
+        if (config.onDblClick) {
+            $input.dblclick(function() {
+                        config.onDblClick($(this).data('span'));
+                    });
+        }
+
+        div.append($input);
+        span.append(div);
+        var validate = $.ajaxframework.validation.getValidate(config);
+        $input.addClass(validate);
+
+       // $input.textinput();
+        if (config.suffix) {
+            div
+                    .find('input')
+                    .next()
+                    .after('<span class="ui-input-clear ui-btn ui-mini ui-corner-all" style="margin-right:20px">'
+                            + config.suffix + '</span>');
+        }
+        span.setValue(config.value || '');
+    },
+    getValue : function(span, config) {
+        var value = span.find('input').val();
+        if (config.integer) {
+            if ($.isNumeric(value)) {
+                value = parseInt(value);
+            } else {
+                value = 0;
+            }
+        }
+        return value;
+    },
+    setValue : function(span, config, value) {
+        span.find('input').val(value);
+    },
+    disabled : function(span) {
+        span.find('input').textinput('disable');
+    }
+}
+$(function() {
+            $.fn.render = function(configParams) {
+                var config = $.ajaxframework.getConfig($(this));//{id:'id',name:'name',ftype:'text'};//
+                if (($(this).attr('id') == null || $(this).attr('id') == '')
+                        && (config.name || config.id)) {
+                    if (config.id) {
+                        $(this).attr('id', 'span_' + config.id);
+                    } else {
+                        $(this).attr('id', 'span_' + config.name);
+                    }
+                }
+                config.widget = $(this);
+                if (configParams && configParams != 'initRender') {
+                    $.extend(config, configParams);
+                }
+                $(this).data(config);
+                if ((config.render == false || config.render == 'false')
+                        && configParams == 'initRender') {
+                    return;
+                }
+                var ftype = config.ftype;
+
+                if ($.ajaxframework[ftype] && $.ajaxframework[ftype].render) {
+                    $.ajaxframework[ftype].render($(this), config);
+                }
+
+                if (config.hidden == true) {
+                    $(this).hide();
+                }
+                if (config.disabled) {
+                    $(this).disabled();
+                }
+            }
+            $.fn.renderAll = function() {
+                $(this).find("[ftype]").each(function() {
+                            if ($(this).attr('ftype') != 'asyncFile') {
+                                $(this).render();
+                            }
+                        });
+                $(this).find("[ftype=asyncFile]").each(function() {
+                            $(this).render();
+                        });
+                $(this).render();
+            }
+
+            $.fn.setConfig = function(config) {
+                for (var p in config) {
+                    $(this).data(p, config[p]);
+                }
+            }
+
+            $.fn.getConfig = function(key) {
+                var config = null;
+                if (key) {
+                    config = $(this).data(key);
+                } else {
+                    config = $(this).data();
+                }
+                return config;
+            }
+
+            $.fn.getWidget = function() {
+                var ftype = this.attr('ftype');
+                var config = $.ajaxframework.getConfig($(this));
+                var span = $(this);
+                if ($.ajaxframework[ftype] && $.ajaxframework[ftype].getWidget) {
+                    return $.ajaxframework[ftype].getWidget($(this), config);
+                }
+                var object = {
+                    widget : span
+                };
+                return object;
+            };
+
+            $.fn.getValue = function() {
+                var ftype = this.attr('ftype');
+                if ($.ajaxframework.widgetArray.inArray(ftype)) {
+                    return $.ajaxframework.value.getValueBySpan(this);
+                } else {
+                    return $.ajaxframework.value.getAreaValue(this);
+                }
+            };
+            $.fn.setValue = function(value, params) {
+                var ftype = this.attr('ftype');
+                var config = $.ajaxframework.getConfig($(this));
+                if (params) {
+                    $.extend(config, params);
+                }
+                if ($.ajaxframework.widgetArray.inArray(ftype)) {
+                    $.ajaxframework.value.setValueBySpan(this, value, config);
+                    if (config.view == true) {
+                        this.toView(config);
+                    }
+                } else {
+                    $.ajaxframework.value.setAreaValue(this, value || {}, config);
+                }
+            };
+
+            $.fn.disabled = function() {
+                var ftype = this.attr('ftype');
+                var config = $.ajaxframework.getConfig($(this));
+                if (ftype && $.ajaxframework[ftype].disabled) {
+                    $.ajaxframework[ftype].disabled($(this), config);
+                }
+            }
+
+            $.fn.undisabled = function() {
+                var ftype = this.attr('ftype');
+                if (ftype && $.ajaxframework[ftype].undisabled) {
+                    $.ajaxframework[ftype].undisabled($(this), $.ajaxframework
+                                    .getConfig($(this)));
+                }
+            };
+
+            $.fn.getValueData = function() {
+                var ftype = this.attr('ftype');
+                return $.ajaxframework[ftype].getValueData($(this), $.ajaxframework
+                                .getConfig($(this)))
+            }
+
+            $("[ftype]").each(function() {
+                        if ($(this).attr('ftype') != 'asyncFile') {
+                            $(this).render('initRender');
+                        }
+                    });
+            $("[ftype=asyncFile]").each(function() {
+                        $(this).render('initRender');
+                    });
+            init();
+        });
+function init() {
+}
