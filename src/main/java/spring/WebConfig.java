@@ -18,8 +18,8 @@ import com.cloudcode.framework.annotation.ModuleConfig;
 @PropertySource(name = "web.env", value = "classpath:env.properties")
 @Import({   
 	com.cloudcode.framework.ProjectConfig.class,	
-	//com.cloudcode.lottery.ProjectConfig.class,
-	//com.cloudcode.push.ProjectConfig.class,
+	com.cloudcode.push.ProjectConfig.class,
+	com.cloudcode.lottery.ProjectConfig.class,
 	com.cloudcode.usersystem.ProjectConfig.class,
 	com.cloudcode.menu.ProjectConfig.class,
 	com.cloudcode.organization.ProjectConfig.class,
