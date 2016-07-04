@@ -131,11 +131,11 @@
 	</tx:advice>
 
 	<!-- 定义切面，在 * com.*.dao.*(..) 中执行有关的hibernate session的事务操作 -->
-	<aop:config>
+	<!-- <aop:config>
 		<aop:pointcut id="serviceOperation" expression="execution(* *.*.*.dao.*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
-	</aop:config>
-
+	</aop:config> -->
+	<aop:aspectj-autoproxy />
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource">
 			<ref local="dataSource" />
