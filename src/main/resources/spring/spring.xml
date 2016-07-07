@@ -6,8 +6,6 @@
 	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  
-        http://www.springframework.org/schema/aop 
-        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd        
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.1.xsd  
         http://www.springframework.org/schema/jee 
@@ -15,18 +13,28 @@
         http://www.springframework.org/schema/tx 
         http://www.springframework.org/schema/tx/spring-tx-3.1.xsd  
         http://www.springframework.org/schema/util
-        http://www.springframework.org/schema/util/spring-util-3.1.xsd"
+        http://www.springframework.org/schema/util/spring-util-3.1.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd"
 	default-lazy-init="false">
+	
+	<context:component-scan base-package="com.cloudcode"  use-default-filters="false">   
+	     <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />   
+	</context:component-scan>   
+
 	<!-- <import resource="applicationContext-cxf.xml" /> -->
 	<!-- <import resource="application-security.xml" /> -->
 	<import resource="spring-security.xml"/>	
 	<bean
 		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 	<context:annotation-config />
-	<aop:aspectj-autoproxy />
-	<bean class="spring.WebConfig" />
+	
 
-	<tx:annotation-driven />
+	<!-- 激活自动代理功能 -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<!-- <aop:aspectj-autoproxy /> -->
+	<bean class="spring.WebConfig" />
+	
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="${dataSource.jndiName}" />
 	</bean>
@@ -99,22 +107,21 @@
 		</property>
 	</bean>
 	<!-- 定义事务管理 -->
-	<tx:annotation-driven transaction-manager="transactionManager"
-		proxy-target-class="true" />
-
+	
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory">
 		</property>
 	</bean>
-
+	
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	<!-- 定义 Autowired 自动注入 bean -->
 	<bean
 		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	<!-- <tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
-			<!-- 事务执行方式 REQUIRED：指定当前方法必需在事务环境中运行， 如果当前有事务环境就加入当前正在执行的事务环境， 如果当前没有事务，就新建一个事务。 
-				这是默认值。 -->
+			事务执行方式 REQUIRED：指定当前方法必需在事务环境中运行， 如果当前有事务环境就加入当前正在执行的事务环境， 如果当前没有事务，就新建一个事务。 
+				这是默认值。
 			<tx:method name="create*" propagation="REQUIRED" />
 			<tx:method name="save*" propagation="REQUIRED" />
 			<tx:method name="add*" propagation="REQUIRED" />
@@ -124,18 +131,31 @@
 			<tx:method name="import*" propagation="REQUIRED" />
 			<tx:method name="find*" propagation="REQUIRED" />
 			
-			<!-- 指定当前方法以非事务方式执行操作，如果当前存在事务，就把当前事务挂起，等我以非事务的状态运行完，再继续原来的事务。 查询定义即可 
-				read-only="true" 表示只读 -->
+			指定当前方法以非事务方式执行操作，如果当前存在事务，就把当前事务挂起，等我以非事务的状态运行完，再继续原来的事务。 查询定义即可 
+				read-only="true" 表示只读
 			<tx:method name="*" read-only="true" propagation="SUPPORTS" />
 		</tx:attributes>
-	</tx:advice>
+	</tx:advice> -->
 
 	<!-- 定义切面，在 * com.*.dao.*(..) 中执行有关的hibernate session的事务操作 -->
 	<!-- <aop:config>
 		<aop:pointcut id="serviceOperation" expression="execution(* *.*.*.dao.*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
 	</aop:config> -->
-	<aop:aspectj-autoproxy />
+	<!-- <aop:config> 
+                <aop:pointcut id="serviceOperation" 
+                                            expression="execution(* *.*.*.dao.*.*(..))"/> 
+                <aop:advisor pointcut-ref="serviceOperation" 
+                                         advice-ref="txAdvice"/> 
+                                          
+        </aop:config> -->
+       <!--  <aop:config> 
+                <aop:pointcut id="serviceOperation1" 
+                                            expression="execution(* *.*.*.dao.*.*(..))"/> 
+                <aop:advisor pointcut-ref="serviceOperation1" 
+                                         advice-ref="txAdvice"/> 
+                                          
+        </aop:config> -->
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource">
 			<ref local="dataSource" />
