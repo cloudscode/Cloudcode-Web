@@ -9,6 +9,11 @@
 					http://www.springframework.org/schema/mvc
 					http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+<context:component-scan base-package="com.cloudcode"  use-default-filters="false">   
+	 <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />   
+	 <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />   
+ </context:component-scan>  
+
 	<!-- 默认的注解映射的支持 -->
 	<mvc:annotation-driven>
 		<mvc:message-converters>
@@ -43,7 +48,8 @@
 		<property name="maxUploadSize" value="1048576" /> <!-- 100M -->
 		<property name="maxInMemorySize" value="40960" />
 	</bean>
-	<context:component-scan base-package="com.cloudcode" />
+<!-- 	<context:component-scan base-package="com.cloudcode" /> -->
+	 
 	<mvc:annotation-driven />
 	<mvc:default-servlet-handler />	
 	<mvc:resources mapping="/resources/**" location="/resources/" />	
