@@ -38,13 +38,32 @@
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="${dataSource.jndiName}" />
 	</bean>
-
+	<bean id="DAOInterceptor" class="com.cloudcode.common.util.interceptor.DAOInterceptor" />
+	<bean id="hibernateInsertListener" class="com.cloudcode.common.util.listener.HibernateInsertListener"/>
+	<bean id="hibernateUpdateListener" class="com.cloudcode.common.util.listener.HibernateUpdateListener"/>
+	<bean id="hibernateDeleteListener" class="com.cloudcode.common.util.listener.HibernateDeleteListener"/>
 	<!-- 配置sessionFactory -->
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource">
 			<ref bean="dataSource" />
 		</property>
+		<property name="entityInterceptor">
+			<ref bean="DAOInterceptor"/>
+		</property>
+		<property name="eventListeners">
+			<map>
+				<entry key="post-commit-insert">
+					<ref bean="hibernateInsertListener"/>
+				</entry>
+				<entry key="post-commit-update">
+					<ref bean="hibernateUpdateListener"/>
+				</entry>
+				<entry key="post-commit-delete">
+					<ref bean="hibernateDeleteListener"/>
+				</entry>
+			</map>
+		</property> 
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">
