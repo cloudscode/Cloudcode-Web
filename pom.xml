@@ -4,7 +4,7 @@
 	<groupId>com.cloudcode.web</groupId>
 	<artifactId>cloudcode-webs</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>cloudcode-webs Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>com.cloudcode.core</groupId>
 			<artifactId>Cloudcode-Core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -27,10 +27,22 @@
 		<dependency>
 			<groupId>com.cloudcode.lottery</groupId>
 			<artifactId>Cloudcode-Lottery</artifactId>
-			<version>1-SNAPSHOT</version>
+			<version>1</version>
 		</dependency>
 	</dependencies>
 	<build>
 		<finalName>cloudcode-webs</finalName>
 	</build>
+	<distributionManagement>
+		<!-- <snapshotRepository>
+			<id>lawyee-maven</id>
+			<name>Lawyee Maven Repository</name>
+			<url>http://127.0.0.1:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository> -->
+		<repository>
+			<id>lawyee-maven</id>
+			<name>Lawyee Maven Repository</name>
+			<url>http://127.0.0.1:8081/nexus/content/repositories/releases/</url>
+		</repository>
+	</distributionManagement>
 </project>
