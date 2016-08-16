@@ -44,54 +44,53 @@
 	<listener>
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
-	<!-- <servlet>
-		<servlet-name>service</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>service</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping> -->
+	<!-- <servlet> <servlet-name>service</servlet-name> <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class> 
+		<load-on-startup>1</load-on-startup> </servlet> <servlet-mapping> <servlet-name>service</servlet-name> 
+		<url-pattern>/</url-pattern> </servlet-mapping> -->
 	<listener>
 		<listener-class>
-			org.springframework.web.context.request.RequestContextListener
-		</listener-class>
+			org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
-	<filter>  
-        <filter-name>springSecurityFilterChain</filter-name>  
-    	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>  
-    </filter>  
-    <filter-mapping>  
-        <filter-name>springSecurityFilterChain</filter-name>  
-        <url-pattern>/*</url-pattern>  
-    </filter-mapping>
-    	<filter>  
-        <filter-name>MvcFilter</filter-name>  
-    	<filter-class>com.cloudcode.common.filter.MvcFilter</filter-class>  
-    </filter>  
-    <filter-mapping>  
-        <filter-name>MvcFilter</filter-name>  
-        <url-pattern>/*</url-pattern>  
-    </filter-mapping>
-   	<servlet>
-    	<servlet-name>spring</servlet-name>
-    	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-	    <init-param>
-	        <param-name>contextConfigLocation</param-name>
-	        <param-value>classpath:spring/spring-servlet.xml</param-value>
-	    </init-param>
-	    <load-on-startup>1</load-on-startup>
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>MvcFilter</filter-name>
+		<filter-class>com.cloudcode.common.filter.MvcFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>MvcFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring/spring-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
-	    <servlet-name>spring</servlet-name>
-	    <url-pattern>/</url-pattern>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
-	<!-- <servlet> <servlet-name>CXFService</servlet-name> <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class> 
-		<load-on-startup>1</load-on-startup> </servlet> <servlet-mapping> <servlet-name>CXFService</servlet-name> 
-		<url-pattern>/cxfService/*</url-pattern> </servlet-mapping> -->
+
+	<servlet>
+		<servlet-name>CXFService</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CXFService</servlet-name>
+		<url-pattern>/cxfService/*</url-pattern>
+	</servlet-mapping>
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>

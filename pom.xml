@@ -34,6 +34,11 @@
 			<artifactId>p6spy</artifactId>
 			<version>2.3.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.cloudcode.cxf</groupId>
+			<artifactId>Cloudcode-cxf</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>cloudcode-webs</finalName>
