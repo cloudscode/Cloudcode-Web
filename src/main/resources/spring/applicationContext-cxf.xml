@@ -10,9 +10,6 @@
 
 	<!-- 导入资源 -->
 	<import resource="classpath:META-INF/cxf/cxf.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-extension-http.xml" />
 	<!-- 
 		<jaxws:endpoint id="classImpl"
 		实现的Ws服务类,#前缀表示使用Bean
@@ -29,9 +26,7 @@
 	-->
 	
 	<!-- 使用new -->
-	<jaxws:endpoint id="appClient" implementor="com.cloudcode.client.cxf.impl.appClient" address="/appClient" >
+	<jaxws:endpoint id="appClient" implementor="com.cloudcode.cxf.cxf.impl.appClient" address="/appClient" >
 	</jaxws:endpoint>
 	<!-- 使用bean -->
-
-
 </beans>

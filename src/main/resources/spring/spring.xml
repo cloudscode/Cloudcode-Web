@@ -25,9 +25,10 @@
 	     <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />   
 	</context:component-scan>   
 
-	<import resource="applicationContext-cxf.xml" />
+	
 	<!-- <import resource="application-security.xml" /> -->
 	<import resource="spring-security.xml"/>	
+	<import resource="applicationContext-cxf.xml" />
 	<bean
 		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 	<context:annotation-config />
