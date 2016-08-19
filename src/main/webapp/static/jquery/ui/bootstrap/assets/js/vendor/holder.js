@@ -148,8 +148,10 @@ function fluid(el, holder, src) {
 function fluid_update() {
 	for (i in fluid_images) {
 		var el = fluid_images[i];
-		var label = el.getElementsByTagName("td")[0].firstChild;
-		label.data = el.offsetWidth + "x" + el.offsetHeight;
+		if(el){
+			var label = el.getElementsByTagName("td")[0].firstChild;
+			label.data = el.offsetWidth + "x" + el.offsetHeight;
+		}
 	}
 }
 
