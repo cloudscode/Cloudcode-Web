@@ -1,16 +1,16 @@
 $.cc = $.cc || {};
 
 $.cc.property = {
-	img_add : '/hhcommon/images/extjsico/add.gif',
-	img_delete : '/hhcommon/images/extjsico/delete2.gif',
-	img_edit : '/hhcommon/images/extjsico/edit.gif',
-	img_email_open : '/hhcommon/images/icons/email/email_open.png',
-	img_email : '/hhcommon/images/icons/email/email.png',
-	img_email_close : '/hhcommon/images/icons/email/email_close.gif',
-	img_refresh : '/hhcommon/images/icons/arrow/arrow_refresh.png',
-	img_excel : '/hhcommon/images/myimage/excel.png',
-	img_wenjianjia : '/hhcommon/images/framework/wenjianjia.jpg',
-	img_wenjian : '/hhcommon/images/framework/wenjian.jpg',
+	img_add : '/cccommon/images/extjsico/add.gif',
+	img_delete : '/cccommon/images/extjsico/delete2.gif',
+	img_edit : '/cccommon/images/extjsico/edit.gif',
+	img_email_open : '/cccommon/images/icons/email/email_open.png',
+	img_email : '/cccommon/images/icons/email/email.png',
+	img_email_close : '/cccommon/images/icons/email/email_close.gif',
+	img_refresh : '/cccommon/images/icons/arrow/arrow_refresh.png',
+	img_excel : '/cccommon/images/myimage/excel.png',
+	img_wenjianjia : '/cccommon/images/framework/wenjianjia.jpg',
+	img_wenjian : '/cccommon/images/framework/wenjian.jpg',
 	loginUser : {},
 	execLoad : {},
 	classObject : {
@@ -1010,7 +1010,7 @@ $.cc.check = {
 $.cc.date = {
 	render : function(span, config) {
 		span.empty();
-		var $input = $('<input style="background:url(/hhcommon/opensource/My97DatePicker/skin/datePicker.gif) no-repeat right;" type="text" >');
+		var $input = $('<input style="background:url(/cccommon/opensource/My97DatePicker/skin/datePicker.gif) no-repeat right;" type="text" >');
 		var type = null;
 		if (config.type == 'datetime') {
 			type = 'yyyy-MM-dd HH:mm:ss';
@@ -1228,7 +1228,7 @@ $.cc.tableitem = {
 $.cc.selectTree = {
 	render : function(span, config) {
 		$.cc.fn.renderSelect(span, config, {
-			openurl : 'jsp-system-tools-treeselect'
+			openurl : '../systools/treeselect'
 		});
 		span.setValue(config.value || '');
 	},
@@ -1378,7 +1378,7 @@ $.cc.selectPic = {
 				: 'jsp-system-tools-bigpicselect';
 		params.params = config.params || {};
 		if (params.params.path == null || params.params.path == '') {
-			params.params.path = '/hhcommon/images';
+			params.params.path = '/cccommon/images';
 		}
 		params.config = config;
 		a.click(function() {
@@ -1525,7 +1525,7 @@ $.cc.fileUpload = {
 						removeCompleted : false,
 						buttonText : '<div>上&nbsp;&nbsp;传</div>',
 						buttonClass : 'ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only',
-						'swf' : '/hhcommon/opensource/jquery/uploadify/uploadify.swf',
+						'swf' : '/cccommon/opensource/jquery/uploadify/uploadify.swf',
 						'uploader' : 'system-File-save',
 						onFallback : function() {
 							// 在初始化时检测不到浏览器有兼容性的flash版本时实触发
@@ -4052,10 +4052,10 @@ var Doing = {
 	doingdivhtml : '<div id="doing" class="hh_overlay"></div>',
 	doingdivhtml2 : '<div id="loading" class="hh_loading">'
 			+ '<div class="loading-indicator">'
-			+ '<img src="/hhcommon/images/loading/loadingred.gif"'
+			+ '<img src="/cccommon/images/loading/loadingred.gif"'
 			+ ' 	style="margin-right: 8px;margin-top: 3px;  float: left; vertical-align: top;" />&nbsp;&nbsp;'
 			+ '<a href="javascript:Doing.hide();">关闭</a>' + '</div>' + '</div>',
-	doingdivhtml3 : '<img src="/hhcommon/images/loading/loadingred.gif" '
+	doingdivhtml3 : '<img src="/cccommon/images/loading/loadingred.gif" '
 			+ ' 	style="margin-left: 18px;margin-top: 15px; float: left; vertical-align: top;" />',
 	doingdiv : null,
 	hide : function() {

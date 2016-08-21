@@ -228,26 +228,26 @@ $.ajaxframework.validation = {
     }
 }
 $.ajaxframework.getConfig = function(input) {
-    var config = input.attr('config');
-    if (config) {
-        config = $.ajaxframework.toObject('{' + config + '}');
-    } else {
-        var configVar = input.attr('configVar');
-        if (configVar) {
-            var configVarObj = eval(configVar);
-            var obj = {};
-            for (var p in configVarObj) {
-                obj[p] = configVarObj[p];
-            }
-            config = obj;
-        }
-    }
-    if (config == null || config == '') {
-        config = {};
-    }
-    config.ftype = input.attr("ftype");
-    config = $.extend(config, input.data());
-    return config;
+	var config = input.attr('config');
+	if (config) {
+		config = $.hh.toObject('{' + config + '}');
+	} else {
+		var configVar = input.attr('configVar');
+		if (configVar) {
+			var configVarObj = eval(configVar);
+			var obj = {};
+			for ( var p in configVarObj) {
+				obj[p] = configVarObj[p];
+			}
+			config = obj;
+		}
+	}
+	if (config == null || config == '') {
+		config = {};
+	}
+	config.xtype = input.attr("xtype");
+	config = $.extend(config, input.data());
+	return config;
 }
 $.ajaxframework.toObject = function(string) {
     try {
@@ -260,27 +260,27 @@ $.ajaxframework.toObject = function(string) {
         }
     }
 };
-$.hh.widgetList = [ 'text', 'password', 'radio', 'selectTree', 'selectUser',
+$.ajaxframework.widgetList = [ 'text', 'password', 'radio', 'selectTree', 'selectUser',
             		'selectPageList', 'selectPic', 'checkbox', 'check', 'textarea',
             		'ckeditor', 'tableitem', 'date', 'file', 'uploadpic', 'selectInput',
             		'combobox', 'selectOrg', 'itemselect', 'selectColor', 'fileUpload' ];
-            $.hh.widgetFind = '';
-            for (var i = 0; i < $.hh.widgetList.length; i++) {
+            $.ajaxframework.widgetFind = '';
+            for (var i = 0; i < $.ajaxframework.widgetList.length; i++) {
             	if (i != 0) {
-            		$.hh.widgetFind += ',';
+            		$.ajaxframework.widgetFind += ',';
             	}
-            	$.hh.widgetFind += '[xtype=' + $.hh.widgetList[i] + ']';
+            	$.ajaxframework.widgetFind += '[xtype=' + $.ajaxframework.widgetList[i] + ']';
             }
 
-            $(function() {
-            	var parentTheme = $.hh.getRootFrame().$('#jqueryuicss').attr('href');
+            $(function() {debugger;
+            	var parentTheme = $.ajaxframework.getRootFrame().$('#jqueryuicss').attr('href');
             	var theme = $('#jqueryuicss').attr('href');
             	if (parentTheme && theme && theme.indexOf(parentTheme) == -1
             			&& parentTheme.indexOf(theme) == -1) {
             		$('#jqueryuicss').attr('href', parentTheme);
             	}
             	$.fn.render = function(configParams) {
-            		var config = $.hh.getConfig($(this));
+            		var config = $.ajaxframework.getConfig($(this));
 
             		if (($(this).attr('id') == null || $(this).attr('id') == '')
             				&& (config.name || config.id)) {
@@ -302,8 +302,8 @@ $.hh.widgetList = [ 'text', 'password', 'radio', 'selectTree', 'selectUser',
             		}
             		var xtype = config.xtype;
 
-            		if ($.hh[xtype] && $.hh[xtype].render) {
-            			$.hh[xtype].render($(this), config);
+            		if ($.ajaxframework[xtype] && $.ajaxframework[xtype].render) {
+            			$.ajaxframework[xtype].render($(this), config);
             		}
 
             		if (config.hidden == true) {
@@ -330,7 +330,7 @@ $.hh.widgetList = [ 'text', 'password', 'radio', 'selectTree', 'selectUser',
             		} else {
             			config = $(this).data();
             			if ($.isEmptyObject(config)) {
-            				config = $.hh.getConfig($(this));
+            				config = $.ajaxframework.getConfig($(this));
             			}
             		}
             		return config;
@@ -338,10 +338,10 @@ $.hh.widgetList = [ 'text', 'password', 'radio', 'selectTree', 'selectUser',
 
             	$.fn.getWidget = function() {
             		var xtype = this.attr('xtype');
-            		var config = $.hh.getConfig($(this));
+            		var config = $.ajaxframework.getConfig($(this));
             		var span = $(this);
-            		if ($.hh[xtype] && $.hh[xtype].getWidget) {
-            			return $.hh[xtype].getWidget($(this), config);
+            		if ($.ajaxframework[xtype] && $.ajaxframework[xtype].getWidget) {
+            			return $.ajaxframework[xtype].getWidget($(this), config);
             		}
             		var object = {
             			widget : span
@@ -351,39 +351,39 @@ $.hh.widgetList = [ 'text', 'password', 'radio', 'selectTree', 'selectUser',
 
             	$.fn.getValue = function() {
             		var xtype = this.attr('xtype');
-            		if ($.hh.widgetList.inArray(xtype)) {
-            			return $.hh.value.getValueBySpan(this);
+            		if ($.ajaxframework.widgetList.inArray(xtype)) {
+            			return $.ajaxframework.value.getValueBySpan(this);
             		} else {
-            			return $.hh.value.getAreaValue(this);
+            			return $.ajaxframework.value.getAreaValue(this);
             		}
             	};
             	$.fn.setValue = function(value, params) {
             		var xtype = this.attr('xtype');
-            		var config = $.hh.getConfig($(this));
+            		var config = $.ajaxframework.getConfig($(this));
             		if (params) {
             			$.extend(config, params);
             		}
-            		if ($.hh.widgetList.inArray(xtype)) {
-            			$.hh.value.setValueBySpan(this, value, config);
+            		if ($.ajaxframework.widgetList.inArray(xtype)) {
+            			$.ajaxframework.value.setValueBySpan(this, value, config);
             			if (config.view == true) {
             				this.toView(config);
             			}
             		} else {
-            			$.hh.value.setAreaValue(this, value || {}, config);
+            			$.ajaxframework.value.setAreaValue(this, value || {}, config);
             		}
             	};
 
             	$.fn.getValueData = function() {
             		var xtype = this.attr('xtype');
-            		return $.hh[xtype].getValueData($(this), $.hh.getConfig($(this)))
+            		return $.ajaxframework[xtype].getValueData($(this), $.ajaxframework.getConfig($(this)))
             	}
 
             	$.fn.toView = function(paramConfig) {
             		var config = paramConfig;
             		if (config == null) {
-            			config = $.hh.getConfig($(this));
+            			config = $.ajaxframework.getConfig($(this));
             		}
-            		$.hh.value.setViewValueBySpan($(this), config);
+            		$.ajaxframework.value.setViewValueBySpan($(this), config);
             	};
 
             	$.fn.setValueName = function(values) {
@@ -391,7 +391,7 @@ $.hh.widgetList = [ 'text', 'password', 'radio', 'selectTree', 'selectUser',
             			var field = $(this).find('[domName=' + p + ']');
             			var value = values[p];
             			var render = field.attr('render');
-            			value = $.hh.renderValue(value, render);
+            			value = $.ajaxframework.renderValue(value, render);
             			try {
             				field.html(value);
             			} catch (e) {
@@ -403,8 +403,8 @@ $.hh.widgetList = [ 'text', 'password', 'radio', 'selectTree', 'selectUser',
             	$.fn.disabled = function(value) {
             		var xtype = this.attr('xtype');
 
-            		if ($.hh[xtype] && $.hh[xtype].disabled) {
-            			return $.hh[xtype].disabled($(this));
+            		if ($.ajaxframework[xtype] && $.ajaxframework[xtype].disabled) {
+            			return $.ajaxframework[xtype].disabled($(this));
             		} else {
             			if ($(this).find('[widgettype=mask]').length == 0) {
             				value = value || '';
@@ -417,8 +417,8 @@ $.hh.widgetList = [ 'text', 'password', 'radio', 'selectTree', 'selectUser',
             	};
             	$.fn.undisabled = function() {
             		var xtype = this.attr('xtype');
-            		if ($.hh[xtype] && $.hh[xtype].undisabled) {
-            			return $.hh[xtype].undisabled($(this));
+            		if ($.ajaxframework[xtype] && $.ajaxframework[xtype].undisabled) {
+            			return $.ajaxframework[xtype].undisabled($(this));
             		} else {
             			$(this).find('[widgettype=mask]').remove();
             		}
@@ -428,12 +428,12 @@ $.hh.widgetList = [ 'text', 'password', 'radio', 'selectTree', 'selectUser',
             		if (params) {
             			$(this).setConfig(params);
             		}
-            		var config = $.hh.getConfig($(this));
+            		var config = $.ajaxframework.getConfig($(this));
             		var xtype = config.xtype;
             		if (xtype == 'tree') {
-            			$.hh.tree.refresh($(this).find('ul').attr('id'));
+            			$.ajaxframework.tree.refresh($(this).find('ul').attr('id'));
             		} else if (xtype == 'pagelist') {
-            			$.hh.pagelist.loadData(config);
+            			$.ajaxframework.pagelist.loadData(config);
             		}
             	};
 
@@ -1166,7 +1166,7 @@ var Doing = {
 		}
 		
 		
-		$.hh.fn = {
+		$.ajaxframework.fn = {
 				setAttr : function(span, widget, config) {
 					if (config.class_) {
 						widget.addClass(config.class_);
@@ -1192,7 +1192,7 @@ var Doing = {
 					if (config.disabled) {
 						widget.css('disabled', config.disabled);
 					}
-					var validate = $.hh.validation.getValidate(config);
+					var validate = $.ajaxframework.validation.getValidate(config);
 					if (validate) {
 						widget.addClass(validate);
 					}
@@ -1204,7 +1204,7 @@ var Doing = {
 				},
 				renderSelect : function(span, config, paramMap) {
 					span.empty();
-					var id = $.hh.getUUID();
+					var id = $.ajaxframework.getUUID();
 					if (config.id) {
 						id = config.id;
 					}
@@ -1221,11 +1221,11 @@ var Doing = {
 								+ '"  readonly=true style="height:70px;"></textarea>');
 					}
 
-					text.attr('params', $.hh.toString(config.params));
+					text.attr('params', $.ajaxframework.toString(config.params));
 
 					var width = config.width || '100%';
 					delete config.width;
-					$.hh.fn.setAttr(span, text, config);
+					$.ajaxframework.fn.setAttr(span, text, config);
 
 					var params = {
 						config : config
@@ -1244,7 +1244,7 @@ var Doing = {
 					params.height = paramMap.height;
 					params.params = config.params || {};
 
-					// params = $.hh.toString(params);
+					// params = $.ajaxframework.toString(params);
 					var a = $('<button>选择</button>');
 					a.button({
 						icons : {
@@ -1253,7 +1253,7 @@ var Doing = {
 						text : false
 					})
 					a.click(function() {
-						$.hh.fn.showSelectTree(params);
+						$.ajaxframework.fn.showSelectTree(params);
 						return false;
 					});
 
@@ -1340,10 +1340,10 @@ var Doing = {
 				}
 			}
 
-			$.hh.value = {
+			$.ajaxframework.value = {
 				getAreaValue : function(form) {
 					var spanList = [];
-					form.find($.hh.widgetFind).each(function() {
+					form.find($.ajaxframework.widgetFind).each(function() {
 						if ($(this).parents('[xtype=tableitem]').length == 0) {
 							spanList.push($(this));
 						}
@@ -1351,32 +1351,32 @@ var Doing = {
 					var values = {};
 					for (var i = 0; i < spanList.length; i++) {
 						var span = spanList[i];
-						var config = $.hh.getConfig(span);
-						var value = $.hh.value.getValueBySpan(span, config);
+						var config = $.ajaxframework.getConfig(span);
+						var value = $.ajaxframework.value.getValueBySpan(span, config);
 						values[config.name] = value;
 					}
 					return values;
 				},
 				getValueBySpan : function(span, config) {
 					if (config == null) {
-						config = $.hh.getConfig(span);
+						config = $.ajaxframework.getConfig(span);
 					}
 					var xtype = config.xtype;
 					var value = '';
 					if (span.getConfig('toView')) {
 						return span.getConfig('value');
 					}
-					if ($.hh[xtype] && $.hh[xtype].getValue) {
-						value = $.hh[xtype].getValue(span, config);
+					if ($.ajaxframework[xtype] && $.ajaxframework[xtype].getValue) {
+						value = $.ajaxframework[xtype].getValue(span, config);
 					}
 					return value;
 				},
 				setAreaValue : function(form, values, formConfig) {
-					form.find($.hh.widgetFind).each(
+					form.find($.ajaxframework.widgetFind).each(
 							function() {
 								if ($(this).parents('[xtype=tableitem]').length == 0) {
-									var config = $.hh.getConfig($(this));
-									$.hh.value.setValueBySpan($(this), values[config.name],
+									var config = $.ajaxframework.getConfig($(this));
+									$.ajaxframework.value.setValueBySpan($(this), values[config.name],
 											config);
 									if (formConfig.view == true) {
 										$(this).toView(config);
@@ -1391,27 +1391,27 @@ var Doing = {
 						}
 					}
 					if (config == null) {
-						config = $.hh.getConfig(span);
+						config = $.ajaxframework.getConfig(span);
 					}
 					var xtype = config.xtype;
 					span.setConfig({
 						value : value,
 						text : value
 					});
-					if ($.hh[xtype] && $.hh[xtype].setValue) {
-						$.hh[xtype].setValue(span, config, value);
+					if ($.ajaxframework[xtype] && $.ajaxframework[xtype].setValue) {
+						$.ajaxframework[xtype].setValue(span, config, value);
 					}
 				},
 				setViewValueBySpan : function(span, config) {
 					var xtype = span.attr('xtype');
 					if (config == null) {
-						config = $.hh.getConfig(span);
+						config = $.ajaxframework.getConfig(span);
 					}
 					span.setConfig({
 						'toView' : true
 					});
-					if ($.hh[xtype] && $.hh[xtype].toView) {
-						$.hh[xtype].toView(span, config);
+					if ($.ajaxframework[xtype] && $.ajaxframework[xtype].toView) {
+						$.ajaxframework[xtype].toView(span, config);
 					} else {
 						span.children().hide();
 						span.append('<span type="text_span">' + (span.data('text') || '')
@@ -1420,11 +1420,11 @@ var Doing = {
 				}
 			}
 
-			$.hh.password = {
+			$.ajaxframework.password = {
 				render : function(span, config) {
 					span.empty();
 					var $input = $('<input type="password"  />');
-					$.hh.fn.setAttr(span, $input, config);
+					$.ajaxframework.fn.setAttr(span, $input, config);
 					span.append($input);
 					if (!config.value && config.defaultValue) {
 						span.setValue(config.defaultValue);
@@ -1432,7 +1432,7 @@ var Doing = {
 						span.setValue(config.value || '');
 					}
 					if (config.watermark) {
-						$.hh.watermark($input, config.watermark);
+						$.ajaxframework.watermark($input, config.watermark);
 					}
 				},
 				getValue : function(span, config) {
@@ -1451,16 +1451,16 @@ var Doing = {
 					span.append('<span type="text_span">' + ('******') + '</span>');
 				}
 			}
-			$.hh.file = {
+			$.ajaxframework.file = {
 				render : function(span, config) {
 					span.empty();
 					var table = $('<table xtype="form">'
 							+ '<tr type="view_remove">	<td xtype="label" style="text-align: left;" colspan="3"><span	xtype="button" config="text:\'添加\'"></span></td></tr>'
 							+ '<tr>	<td style="text-align: center;background: '
-							+ $.hh.property.classObject.themeContent
+							+ $.ajaxframework.property.classObject.themeContent
 							+ ';" class="hh_tableForm_td"">名称</td>'
 							+ '<td style="text-align: center;width:35px;background: '
-							+ $.hh.property.classObject.themeContent
+							+ $.ajaxframework.property.classObject.themeContent
 							+ '; " type="view_remove">操作</td></tr>' + '</table>');
 
 					table.renderAll();
@@ -1520,13 +1520,13 @@ var Doing = {
 							}
 						});
 					});
-					value = $.hh.toString(value);
+					value = $.ajaxframework.toString(value);
 					return value;
 				},
 				setValue : function(span, config, value) {
 					if (value) {
 						if (typeof value == "string") {
-							value = $.hh.toObject(value);
+							value = $.ajaxframework.toObject(value);
 						}
 					}
 					if (value && value.length > 0) {
@@ -1553,13 +1553,13 @@ var Doing = {
 				}
 			}
 
-			$.hh.ckeditor = {
+			$.ajaxframework.ckeditor = {
 				render : function(span, config) {
 					span.empty();
 					var $input = $('<textarea   />');
-					$.hh.fn.setAttr(span, $input, config);
+					$.ajaxframework.fn.setAttr(span, $input, config);
 					if (config.name && config.hidden != true) {
-						$.hh.property.execLoad[config.name] = function() {
+						$.ajaxframework.property.execLoad[config.name] = function() {
 							if ($('[name=' + config.name + ']').length > 0
 									&& span.find('[type=text_span]').length == 0) {
 								CKEDITOR.replace(config.name, {
@@ -1593,7 +1593,7 @@ var Doing = {
 								if (config.nheight) {
 									CKEDITOR.instances[config.name].on("instanceReady",
 											function() {
-												$.hh
+												$.ajaxframework
 														.nheight(
 																span.find('.cke_contents'),
 																config.nheight,
@@ -1643,12 +1643,12 @@ var Doing = {
 				}
 			}
 
-			$.hh.button = {
+			$.ajaxframework.button = {
 				render : function(field, config) {
 					field.empty();
 					var $input = $("<button>"
 							+ (config.text == null ? '&nbsp;' : config.text) + "</button>");
-					$.hh.fn.setAttr(field, $input, config);
+					$.ajaxframework.fn.setAttr(field, $input, config);
 					field.append($input);
 
 					var menuId = config.menuId;
@@ -1657,7 +1657,7 @@ var Doing = {
 						$('#' + menuId).css(
 								{
 									'border' : '1px solid '
-											+ $.hh.property.classObject.themeContent,
+											+ $.ajaxframework.property.classObject.themeContent,
 									'position' : 'absolute'
 								});
 					}
@@ -1765,7 +1765,7 @@ var Doing = {
 				}
 			}
 
-			$.hh.text = {
+			$.ajaxframework.text = {
 				render : function(span, config) {
 					span.empty();
 					var $input = $('<input type="text"  />');
@@ -1808,7 +1808,7 @@ var Doing = {
 							}
 						});
 					}
-					$.hh.fn.setAttr(span, $input, config);
+					$.ajaxframework.fn.setAttr(span, $input, config);
 					span.append($input);
 					if (!config.value && config.defaultValue) {
 						span.setValue(config.defaultValue);
@@ -1816,7 +1816,7 @@ var Doing = {
 						span.setValue(config.value || '');
 					}
 					if (config.watermark) {
-						$.hh.watermark($input, config.watermark);
+						$.ajaxframework.watermark($input, config.watermark);
 					}
 
 				},
@@ -1839,11 +1839,11 @@ var Doing = {
 					span.find('input').val(value);
 				}
 			}
-			$.hh.textarea = {
+			$.ajaxframework.textarea = {
 				render : function(span, config) {
 					span.empty();
 					var $input = $('<textarea   />');
-					$.hh.fn.setAttr(span, $input, config);
+					$.ajaxframework.fn.setAttr(span, $input, config);
 					if (config.height) {
 						$input.css('height', config.height);
 					}
@@ -1868,12 +1868,12 @@ var Doing = {
 				}
 			}
 
-			$.hh.radio = {
+			$.ajaxframework.radio = {
 				render : function(span, config) {
 					span.css('display', 'inline-block');
 					span.empty();
-					var name = config.name || $.hh.getUUID();
-					var validate = $.hh.validation.getValidate(config);
+					var name = config.name || $.ajaxframework.getUUID();
+					var validate = $.ajaxframework.validation.getValidate(config);
 					if (config.data) {
 						var dataList = config.data;
 						for (var i = 0; i < dataList.length; i++) {
@@ -1921,12 +1921,12 @@ var Doing = {
 				}
 			}
 
-			$.hh.checkbox = {
+			$.ajaxframework.checkbox = {
 				render : function(span, config) {
 					span.css('display', 'inline-block');
 					span.empty();
-					var name = config.name || $.hh.getUUID();
-					var validate = $.hh.validation.getValidate(config);
+					var name = config.name || $.ajaxframework.getUUID();
+					var validate = $.ajaxframework.validation.getValidate(config);
 					if (config.data) {
 						var dataList = config.data;
 						for (var i = 0; i < dataList.length; i++) {
@@ -1980,12 +1980,12 @@ var Doing = {
 				}
 			}
 
-			$.hh.check = {
+			$.ajaxframework.check = {
 				render : function(span, config) {
 					span.css('display', 'inline-block');
 					span.empty();
 					var name = config.name;
-					var id = $.hh.getUUID();
+					var id = $.ajaxframework.getUUID();
 					var checked = config.defaultValue ? 'checked' : '';
 					var input = $('<input ' + checked + ' id="' + id
 							+ '" type="checkbox"  name="' + name + '" />' + '<label for="'
@@ -2009,7 +2009,7 @@ var Doing = {
 				}
 			}
 
-			$.hh.date = {
+			$.ajaxframework.date = {
 				render : function(span, config) {
 					span.empty();
 					var $input = $('<input style="background:url(/hhcommon/opensource/My97DatePicker/skin/datePicker.gif) no-repeat right;" type="text" >');
@@ -2031,7 +2031,7 @@ var Doing = {
 							WdatePicker(cfg);
 						});
 					}
-					$.hh.fn.setAttr(span, $input, config);
+					$.ajaxframework.fn.setAttr(span, $input, config);
 					$input.addClass('hh_input');
 					if (config.defaultValue) {
 						$input.val(config.defaultValue);
@@ -2044,12 +2044,12 @@ var Doing = {
 				},
 				setValue : function(span, config, value) {
 					if (value) {
-						if (!$.hh.isDate(value)) {
+						if (!$.ajaxframework.isDate(value)) {
 							value = new Date(value);
 							if (config.type == 'datetime') {
-								value = $.hh.dateTimeToString(value);
+								value = $.ajaxframework.dateTimeToString(value);
 							} else {
-								value = $.hh.dateToString(value);
+								value = $.ajaxframework.dateToString(value);
 							}
 						}
 					}
@@ -2066,7 +2066,7 @@ var Doing = {
 				}
 			}
 
-			$.hh.tableitem = {
+			$.ajaxframework.tableitem = {
 				render : function(span, config) {
 					var render = function() {
 						span.empty();
@@ -2192,14 +2192,14 @@ var Doing = {
 						}
 					});
 					if (config.valueType != 'object') {
-						value = $.hh.toString(value);
+						value = $.ajaxframework.toString(value);
 					}
 					return value;
 				},
 				setValue : function(span, config, value) {
 					if (value) {
 						if (typeof value == "string") {
-							value = $.hh.toObject(value);
+							value = $.ajaxframework.toObject(value);
 						}
 					}
 					if (value && value.length > 0) {
@@ -2227,40 +2227,40 @@ var Doing = {
 				}
 			}
 
-			$.hh.selectTree = {
+			$.ajaxframework.selectTree = {
 				render : function(span, config) {
-					$.hh.fn.renderSelect(span, config, {
+					$.ajaxframework.fn.renderSelect(span, config, {
 						openurl : 'jsp-system-tools-treeselect'
 					});
 					span.setValue(config.value || '');
 				},
 				getValue : function(span, config) {
-					return $.hh.fn.getIdTextValue(span, config);
+					return $.ajaxframework.fn.getIdTextValue(span, config);
 				},
 				setValue : function(span, config, value) {
-					$.hh.fn.setIdTextValue(span, config, value);
+					$.ajaxframework.fn.setIdTextValue(span, config, value);
 				}
 			}
 
-			$.hh.selectUser = {
+			$.ajaxframework.selectUser = {
 				render : function(span, config) {
 					var baseParams = {
-						findTextAction : $.hh.property.findUserTextByIds
+						findTextAction : $.ajaxframework.property.findUserTextByIds
 								|| 'usersystem-user-findUserTextByIds'
 					};
 					span.setConfig(baseParams);
 					$.extend(config, baseParams);
-					$.hh.fn.renderSelect(span, config, {
+					$.ajaxframework.fn.renderSelect(span, config, {
 						openurl : 'jsp-usersystem-user-userselect',
 						width : 700,
 						height : 450
 					});
 				},
 				getValue : function(span, config) {
-					return $.hh.fn.getIdTextValue(span, config);
+					return $.ajaxframework.fn.getIdTextValue(span, config);
 				},
 				setValue : function(span, config, value) {
-					$.hh.fn.setIdTextValue(span, config, value);
+					$.ajaxframework.fn.setIdTextValue(span, config, value);
 				},
 				getValueData : function(span, config) {
 					var value = span.find('input:hidden').val();
@@ -2296,33 +2296,33 @@ var Doing = {
 				}
 			}
 
-			$.hh.selectOrg = {
+			$.ajaxframework.selectOrg = {
 				render : function(span, config) {
 
 					var params = config.params || {};
 					params.selectType = config.selectType;
 					var baseParams = {
 						tableName : 'US_ORGANIZATION',
-						findTextAction : $.hh.property.findOrgTextByIds
+						findTextAction : $.ajaxframework.property.findOrgTextByIds
 								|| 'usersystem-Org-findOrgTextByIds',
-						url : $.hh.property.godjQuery || 'usersystem-Org-queryOrgListByPid',
+						url : $.ajaxframework.property.godjQuery || 'usersystem-Org-queryOrgListByPid',
 						params : params
 					};
 					span.setConfig(baseParams);
 					$.extend(config, baseParams);
-					$.hh.fn.renderSelect(span, config, {
+					$.ajaxframework.fn.renderSelect(span, config, {
 						openurl : 'jsp-system-tools-treeselect'
 					});
 				},
 				getValue : function(span, config) {
-					return $.hh.fn.getIdTextValue(span, config);
+					return $.ajaxframework.fn.getIdTextValue(span, config);
 				},
 				setValue : function(span, config, value) {
-					$.hh.fn.setIdTextValue(span, config, value);
+					$.ajaxframework.fn.setIdTextValue(span, config, value);
 				}
 			}
 
-			$.hh.selectPageList = {
+			$.ajaxframework.selectPageList = {
 				render : function(span, config) {
 					if (!config.pageconfig) {
 						config.pageconfig = {
@@ -2336,24 +2336,24 @@ var Doing = {
 							} ]
 						};
 					}
-					$.hh.fn.renderSelect(span, config, {
+					$.ajaxframework.fn.renderSelect(span, config, {
 						openurl : 'jsp-system-tools-pagelistselect',
 						width : config.openWidth || 600,
 						height : 550
 					});
 				},
 				getValue : function(span, config) {
-					return $.hh.fn.getIdTextValue(span, config);
+					return $.ajaxframework.fn.getIdTextValue(span, config);
 				},
 				setValue : function(span, config, value) {
-					$.hh.fn.setIdTextValue(span, config, value);
+					$.ajaxframework.fn.setIdTextValue(span, config, value);
 				}
 			}
 
-			$.hh.selectPic = {
+			$.ajaxframework.selectPic = {
 				render : function(span, config) {
 					var text = $('<input type="text" class="hh_input" readonly=true />');
-					$.hh.fn.setAttr(span, text, config);
+					$.ajaxframework.fn.setAttr(span, text, config);
 					var a = $('<button>选择</button>');
 					a.button({
 						icons : {
@@ -2384,7 +2384,7 @@ var Doing = {
 					}
 					params.config = config;
 					a.click(function() {
-						$.hh.fn.showSelectTree(params);
+						$.ajaxframework.fn.showSelectTree(params);
 						return false;
 					});
 					var a1 = $('<button>清空</button>');
@@ -2425,10 +2425,10 @@ var Doing = {
 				}
 			}
 
-			$.hh.selectInput = {
+			$.ajaxframework.selectInput = {
 				render : function(span, config) {
 					var text = $('<input type="text" class="hh_input" readonly=true />');
-					$.hh.fn.setAttr(span, text, config);
+					$.ajaxframework.fn.setAttr(span, text, config);
 					var a = $('<button>选择</button>');
 					a.button({
 						icons : {
@@ -2451,7 +2451,7 @@ var Doing = {
 					params.openurl = config.openurl || '';
 					params.params = config.params || {};
 					a.click(function() {
-						$.hh.fn.showSelectTree(params);
+						$.ajaxframework.fn.showSelectTree(params);
 						return false;
 					});
 					var a1 = $('<button>清空</button>');
@@ -2478,7 +2478,7 @@ var Doing = {
 				}
 			}
 
-			$.hh.selectColor = {
+			$.ajaxframework.selectColor = {
 				render : function(span, config) {
 					var baseParams = {
 						openurl : 'jsp-system-tools-colorselect',
@@ -2487,7 +2487,7 @@ var Doing = {
 					};
 					span.setConfig(baseParams);
 					$.extend(config, baseParams);
-					$.hh.selectInput.render(span, config);
+					$.ajaxframework.selectInput.render(span, config);
 				},
 				getValue : function(span, config) {
 					var value = span.find('input').val();
@@ -2507,11 +2507,11 @@ var Doing = {
 				}
 			}
 
-			$.hh.fileUpload = {
+			$.ajaxframework.fileUpload = {
 				render : function(span, config) {
 					span.empty();
-					var buttonid = $.hh.getUUID();
-					var divid = $.hh.getUUID();
+					var buttonid = $.ajaxframework.getUUID();
+					var divid = $.ajaxframework.getUUID();
 					var button = $('<button id="' + buttonid + '">上传</button>');
 					var div = $('<div type=list id="' + divid + '"></div>');
 					var serviceId = config.serviceId;
@@ -2519,7 +2519,7 @@ var Doing = {
 					span.append(div);
 					span.append(button);
 
-					$.hh.property.execLoad[config.name] = function() {
+					$.ajaxframework.property.execLoad[config.name] = function() {
 						var uploadify = button
 								.uploadify({
 									fileObjName : 'attachment',
@@ -2535,7 +2535,7 @@ var Doing = {
 									},
 									// 每个文件即将上传前触发
 									onUploadSuccess : function(file, data, b, c, d) {
-										data = $.hh.toObject(data);
+										data = $.ajaxframework.toObject(data);
 										var filediv = div.find('#' + file.id);
 
 										filediv.data('data', {
@@ -2583,7 +2583,7 @@ var Doing = {
 										var config2 = span.getConfig();
 										span.find('.uploadify').uploadify('settings',
 												'formData',
-												$.hh.fileUpload.getFormData1(config2));
+												$.ajaxframework.fileUpload.getFormData1(config2));
 										if (config2.toView) {
 											span.find('.uploadify').hide();
 										}
@@ -2609,7 +2609,7 @@ var Doing = {
 								value.push($(this).data('data'));
 							}
 						});
-						value = $.hh.toString(value);
+						value = $.ajaxframework.toString(value);
 						return value;
 					}
 				},
@@ -2630,7 +2630,7 @@ var Doing = {
 							},
 							doing : false,
 							callback : function(dataList) {
-								$.hh.fileUpload.renderData(span, config, dataList);
+								$.ajaxframework.fileUpload.renderData(span, config, dataList);
 							}
 						});
 					}
@@ -2638,7 +2638,7 @@ var Doing = {
 				setValueService : function(span, config, value) {
 					if (value) {
 						if (typeof value == "string") {
-							value = $.hh.toObject(value);
+							value = $.ajaxframework.toObject(value);
 						}
 					}
 					value = value || [];
@@ -2711,7 +2711,7 @@ var Doing = {
 				}
 			}
 
-			$.hh.uploadpic = {
+			$.ajaxframework.uploadpic = {
 				render : function(span, config) {
 					span.empty();
 					var height = config.height || 150;
@@ -2721,9 +2721,9 @@ var Doing = {
 					var table_style = 'style="height:' + (height + 10) + 'px;width:'
 							+ width + 'px;"';
 
-					var scuuid = $.hh.getUUID();
-					var xzuuid = $.hh.getUUID();
-					var qkuuid = $.hh.getUUID();
+					var scuuid = $.ajaxframework.getUUID();
+					var xzuuid = $.ajaxframework.getUUID();
+					var qkuuid = $.ajaxframework.getUUID();
 
 					var tableHtml = '<table xtype="form">'
 							+ '<tr>	<td  style="height:'
@@ -2805,7 +2805,7 @@ var Doing = {
 					table.find("#" + xzuuid).find("button").button({
 						text : '选择'
 					}).click(function() {
-						$.hh.fn.showSelectTree(params);
+						$.ajaxframework.fn.showSelectTree(params);
 						return false;
 					});
 					table.find("#" + qkuuid).find("button").button({
@@ -2845,12 +2845,12 @@ var Doing = {
 				}
 			}
 
-			$.hh.combobox = {
+			$.ajaxframework.combobox = {
 				render : function(span, config) {
 					span.empty();
 					var name = config.name;
 					var select = $('<select></select>');
-					$.hh.fn.setAttr(span, select, config);
+					$.ajaxframework.fn.setAttr(span, select, config);
 					select.addClass('hh_select');
 					select.append('<option value ="">请选择</option>');
 					var div = $('<div class="hh_select_div"></div>');
@@ -2913,19 +2913,19 @@ var Doing = {
 				}
 			}
 
-			$.hh.itemselect = {
+			$.ajaxframework.itemselect = {
 				render : function(span, config) {
 					span.empty();
 
 					var $table = $('<table xtype="form"  width=100%  >'
 							+ '<tr ><td  width=50% style="background: '
-							+ $.hh.property.classObject.themeContent
+							+ $.ajaxframework.property.classObject.themeContent
 							+ ';"  align=center>可选</td><td width=50   style="background: '
-							+ $.hh.property.classObject.themeContent
+							+ $.ajaxframework.property.classObject.themeContent
 							+ ';"  align=center>操作</td><td  width=50%   style="background: '
-							+ $.hh.property.classObject.themeContent
+							+ $.ajaxframework.property.classObject.themeContent
 							+ ';"  align=center>已选</td><td width=50   style="background: '
-							+ $.hh.property.classObject.themeContent
+							+ $.ajaxframework.property.classObject.themeContent
 							+ ';"  align=center>排序</td></tr>'
 							+ '<tr><td  fromtd = true  style="padding:2px;"></td><td   btntd=true ></td><td  totd = true style="padding:2px;"></td><td   pxbtntd=true ></td></tr></table>');
 
@@ -3154,7 +3154,7 @@ var Doing = {
 				}
 			}
 
-			$.hh.openbutton = {
+			$.ajaxframework.openbutton = {
 				render : function(span, config) {
 					var items = config.items;
 					var maindiv = $('<span>	<button>更多</button>	</span>');
@@ -3190,7 +3190,7 @@ var Doing = {
 				}
 			}
 
-			$.hh.toolbar = {
+			$.ajaxframework.toolbar = {
 				render : function(toolbar, config) {
 					if (config.type == 'head') {
 						toolbar.addClass('ui-widget-header ui-corner-all');
@@ -3217,9 +3217,9 @@ var Doing = {
 				}
 			}
 
-			$.hh.list = {
+			$.ajaxframework.list = {
 				render : function(table, config) {
-					var config = $.hh.getConfig(table);
+					var config = $.ajaxframework.getConfig(table);
 					table.addClass("hh_tableForm");
 					table.children().each(function() {
 						$(this).children().each(function(index) {
@@ -3227,7 +3227,7 @@ var Doing = {
 							$(this).children().each(function(index) {
 								$(this).addClass('hh_tableForm_td');
 							});
-							var tr_config = $.hh.getConfig($(this));
+							var tr_config = $.ajaxframework.getConfig($(this));
 							if (tr_config.title) {
 								$(this).addClass('ui-widget-header');
 								$(this).addClass('hh_tableForm_title');
@@ -3349,7 +3349,7 @@ var Doing = {
 														.each(
 																function(index) {
 																	if (index % 2 == 1
-																			&& $.hh
+																			&& $.ajaxframework
 																					.getConfig($(this)).title != true) {
 																		$(this).addClass(
 																				'hh_hui');
@@ -3359,14 +3359,14 @@ var Doing = {
 										});
 					} else if (config.xtype == 'form') {
 						table.find('[xtype=label]').css({
-							'background' : $.hh.property.classObject.themeContent,
+							'background' : $.ajaxframework.property.classObject.themeContent,
 							'text-align' : 'right',
 							'width' : '90px'
 						});
 						table.find('[xtype=label]').each(
 								function() {
 									var label_td = $(this);
-									var config = $.hh.getConfig(label_td);
+									var config = $.ajaxframework.getConfig(label_td);
 									var width = config.width;
 									if (width) {
 										table.find('tr').each(
@@ -3387,28 +3387,28 @@ var Doing = {
 				}
 			}
 
-			$.hh.form = {
+			$.ajaxframework.form = {
 				render : function(span, config) {
 					if (span.is('table')) {
-						$.hh.list.render(span, config);
+						$.ajaxframework.list.render(span, config);
 					}
 				}
 			}
 
-			$.hh.tree = {
+			$.ajaxframework.tree = {
 				render : function(tree, config) {
 					tree.empty();
 
 					var $input = $('<ul  class="ztree"></ul>');
 					var div = $('<div></div>');
 					var ztree = null;
-					// $.hh.fn.setAttr(tree, $input, config);
+					// $.ajaxframework.fn.setAttr(tree, $input, config);
 
-					$input.attr('id', config.id || $.hh.getUUID());
+					$input.attr('id', config.id || $.ajaxframework.getUUID());
 					div.append($input);
 					tree.append(div);
 
-					$.hh.nheight(tree.children('div'), config.nheight);
+					$.ajaxframework.nheight(tree.children('div'), config.nheight);
 
 					var otherParam = {
 						node : 'root'
@@ -3423,7 +3423,7 @@ var Doing = {
 						if (tree.data('itemRightMenudom')) {
 							menuul = tree.data('itemRightMenudom');
 						} else {
-							menuul = $.hh.menu.renderMenu(config, config.itemRightMenu);
+							menuul = $.ajaxframework.menu.renderMenu(config, config.itemRightMenu);
 							tree.data('itemRightMenudom', menuul)
 						}
 						$('body').append(menuul);
@@ -3431,7 +3431,7 @@ var Doing = {
 							menuul.hide();
 							menuul.css({
 								'border' : '1px solid '
-										+ $.hh.property.classObject.themeContent,
+										+ $.ajaxframework.property.classObject.themeContent,
 								'position' : 'absolute',
 								'z-index' : 9999999999
 							});
@@ -3442,7 +3442,7 @@ var Doing = {
 						if (tree.data('rightMenudom')) {
 							menuul2 = tree.data('rightMenudom');
 						} else {
-							menuul2 = $.hh.menu.renderMenu(config, config.rightMenu);
+							menuul2 = $.ajaxframework.menu.renderMenu(config, config.rightMenu);
 							tree.data('rightMenudom', menuul2)
 						}
 						$('body').append(menuul2);
@@ -3450,7 +3450,7 @@ var Doing = {
 							menuul2.hide();
 							menuul2.css({
 								'border' : '1px solid '
-										+ $.hh.property.classObject.themeContent,
+										+ $.ajaxframework.property.classObject.themeContent,
 								'position' : 'absolute',
 								'z-index' : 9999999999
 							});
@@ -3488,15 +3488,15 @@ var Doing = {
 						},
 						callback : {
 							onAsyncSuccess : function(event, treeId, treeNode, msg) {
-								var dataList = $.hh.toObject(msg);
+								var dataList = $.ajaxframework.toObject(msg);
 								if (config.dataLoad) {
 									config.dataLoad(treeNode);
 								}
 								// if(dataList==null || dataList.length==0){
 								// treeNode.isParent=false;
-								// $.hh.tree.updateNode(treeId, treeNode);
+								// $.ajaxframework.tree.updateNode(treeId, treeNode);
 								// }
-								$.hh.tree.expandNode(ztree, dataList);
+								$.ajaxframework.tree.expandNode(ztree, dataList);
 							},
 							beforeRemove : function(treeId, treeNode) {
 								if (config.remove) {
@@ -3567,8 +3567,8 @@ var Doing = {
 				},
 				doUp : function(params) {
 					var treeid = params.treeid;
-					var ztree = $.hh.tree.getTree(treeid);
-					var selectNode = $.hh.tree.getSelectNode(treeid);
+					var ztree = $.ajaxframework.tree.getTree(treeid);
+					var selectNode = $.ajaxframework.tree.getSelectNode(treeid);
 					if (!selectNode) {
 						Dialog.infomsg('请选择一条数据！');
 						return;
@@ -3587,9 +3587,9 @@ var Doing = {
 								var tid = pnode.order;
 								pnode.order = selectNode.order;
 								selectNode.order = tid;
-								$.hh.tree.updateNode(treeid, selectNode);
-								$.hh.tree.updateNode(treeid, pnode);
-								$.hh.tree.getTree(treeid).refresh();
+								$.ajaxframework.tree.updateNode(treeid, selectNode);
+								$.ajaxframework.tree.updateNode(treeid, pnode);
+								$.ajaxframework.tree.getTree(treeid).refresh();
 								ztree.moveNode(pnode, selectNode, 'prev');
 								ztree.selectNode(selectNode);
 							}
@@ -3600,8 +3600,8 @@ var Doing = {
 				},
 				doDown : function(params) {
 					var treeid = params.treeid;
-					var ztree = $.hh.tree.getTree(treeid);
-					var selectNode = $.hh.tree.getSelectNode(treeid);
+					var ztree = $.ajaxframework.tree.getTree(treeid);
+					var selectNode = $.ajaxframework.tree.getSelectNode(treeid);
 					if (!selectNode) {
 						Dialog.infomsg('请选择一条数据！');
 						return;
@@ -3620,9 +3620,9 @@ var Doing = {
 								var tid = nnode.order;
 								nnode.order = selectNode.order;
 								selectNode.order = tid;
-								$.hh.tree.updateNode(treeid, selectNode);
-								$.hh.tree.updateNode(treeid, nnode);
-								$.hh.tree.getTree(treeid).refresh();
+								$.ajaxframework.tree.updateNode(treeid, selectNode);
+								$.ajaxframework.tree.updateNode(treeid, nnode);
+								$.ajaxframework.tree.getTree(treeid).refresh();
 								ztree.moveNode(nnode, selectNode, 'next');
 								ztree.selectNode(selectNode);
 							}
@@ -3632,7 +3632,7 @@ var Doing = {
 					}
 				},
 				updateNode : function(treeId, node) {
-					$.hh.tree.getTree(treeId).updateNode(node);
+					$.ajaxframework.tree.getTree(treeId).updateNode(node);
 				},
 				getTree : function(treeId) {
 					return $.fn.zTree.getZTreeObj(treeId);
@@ -3669,7 +3669,7 @@ var Doing = {
 						if (data.expanded == 1) {
 							ztree.expandNode(ztree.getNodeByParam("id", data.id, null));
 							if (data.children) {
-								$.hh.tree.expandNode(ztree, data.children);
+								$.ajaxframework.tree.expandNode(ztree, data.children);
 							}
 						}
 					}
@@ -3688,7 +3688,7 @@ var Doing = {
 								},
 								callback : function(result) {
 									if (result.success != false) {
-										$.hh.tree.refresh(pageid);
+										$.ajaxframework.tree.refresh(pageid);
 										if (callback) {
 											callback(result);
 										}
@@ -3703,19 +3703,19 @@ var Doing = {
 						widget : span
 					};
 					object.getSelectNode = function() {
-						return $.hh.tree.getSelectNode(span.find('ul').attr('id'));
+						return $.ajaxframework.tree.getSelectNode(span.find('ul').attr('id'));
 					};
 					object.getSelectNodes = function() {
-						return $.hh.tree.getSelectNodes(span.find('ul').attr('id'));
+						return $.ajaxframework.tree.getSelectNodes(span.find('ul').attr('id'));
 					};
 					object.refresh = function() {
-						return $.hh.tree.refresh(span.find('ul').attr('id'));
+						return $.ajaxframework.tree.refresh(span.find('ul').attr('id'));
 					};
 					return object;
 				}
 			}
 
-			$.hh.border_layout = {
+			$.ajaxframework.border_layout = {
 				render : function(borderLayout, config) {
 					borderLayout.height("100%");
 
@@ -3788,8 +3788,8 @@ var Doing = {
 					var center = {
 						onresize : function(a, b) {
 							var centerHeight = b[0].style.height.replace('px', '');
-							if ($.hh.property.newpanel) {
-								$.hh.property.newpanel.find('iframe').attr('height',
+							if ($.ajaxframework.property.newpanel) {
+								$.ajaxframework.property.newpanel.find('iframe').attr('height',
 										centerHeight - 38);
 							}
 						}
@@ -3802,7 +3802,7 @@ var Doing = {
 									function() {
 										var layout_div = $(this);
 										if (layout_div.is('div')) {
-											var config = $.hh.getConfig(layout_div);
+											var config = $.ajaxframework.getConfig(layout_div);
 											if (layout_div.css('overflow') == null
 													|| layout_div.css('overflow') == '') {
 												layout_div.css({
@@ -3878,9 +3878,9 @@ var Doing = {
 					borderLayout.find('[title=Close]').each(
 							function() {
 								$(this).css('background-color',
-										$.hh.property.classObject.themeContent);
+										$.ajaxframework.property.classObject.themeContent);
 								$(this).parent('div').css('background-color',
-										$.hh.property.classObject.themeHead);
+										$.ajaxframework.property.classObject.themeHead);
 							});
 					// setTimeout(myLayout.resizeAll, 1000);
 				},
@@ -3893,7 +3893,7 @@ var Doing = {
 				}
 			}
 
-			$.hh.accordion = {
+			$.ajaxframework.accordion = {
 				render : function(div, config) {
 					div.find('div').css({
 						padding : '0px'
@@ -3916,13 +3916,13 @@ var Doing = {
 				}
 			}
 
-			$.hh.tab = {
+			$.ajaxframework.tab = {
 				render : function(div, config) {
 					div.tabs({
 						activate : function(event, ui) {
-							$.hh.property.newpanel = $(ui.newPanel);
-							$.hh.property.newpanel.find('iframe').attr('height',
-									$.hh.property.newpanel.height() - 3);
+							$.ajaxframework.property.newpanel = $(ui.newPanel);
+							$.ajaxframework.property.newpanel.find('iframe').attr('height',
+									$.ajaxframework.property.newpanel.height() - 3);
 							if (config.activate) {
 								config.activate(ui, event);
 							}
@@ -3940,9 +3940,9 @@ var Doing = {
 					div.children('div').css({
 						'padding' : '0px'
 					})
-					$.hh.nheight(div, 2);
+					$.ajaxframework.nheight(div, 2);
 					div.children('div').each(function() {
-						$.hh.nheight($(this), 42);
+						$.ajaxframework.nheight($(this), 42);
 					});
 				},
 				getValue : function(span, config) {
@@ -3954,7 +3954,7 @@ var Doing = {
 				}
 			}
 
-			$.hh.pagelist = {
+			$.ajaxframework.pagelist = {
 				render : function(div, config, start, limit, page) {
 					var table = $('<table xtype="list"   ></table>');
 					var columnList = config.column;
@@ -4000,7 +4000,7 @@ var Doing = {
 											.each(function() {
 												var itemclickparams = {
 													checked : checked,
-													rowdata : $.hh.pagelist
+													rowdata : $.ajaxframework.pagelist
 															.getRowDataByTr($(this)),
 													clickDom : 'checkbox'
 												};
@@ -4100,7 +4100,7 @@ var Doing = {
 						var syclick = function() {
 							toolbar_page_input.setValue(1);
 							toolbar_page_input_2.setValue(1);
-							$.hh.pagelist.loadData($.extend(div.getConfig(), {
+							$.ajaxframework.pagelist.loadData($.extend(div.getConfig(), {
 								start : toolbar_limit_input.getValue()
 										* toolbar_page_input.getValue()
 										- toolbar_limit_input.getValue(),
@@ -4114,7 +4114,7 @@ var Doing = {
 							toolbar_page_input.setValue(value);
 							toolbar_page_input_2.setValue(value);
 
-							$.hh.pagelist.loadData($.extend(div.getConfig(), {
+							$.ajaxframework.pagelist.loadData($.extend(div.getConfig(), {
 								start : toolbar_limit_input.getValue()
 										* toolbar_page_input.getValue()
 										- toolbar_limit_input.getValue(),
@@ -4127,7 +4127,7 @@ var Doing = {
 							var value = parseInt(toolbar_page_input.getValue()) + 1;
 							toolbar_page_input.setValue(value);
 							toolbar_page_input_2.setValue(value);
-							$.hh.pagelist.loadData($.extend(div.getConfig(), {
+							$.ajaxframework.pagelist.loadData($.extend(div.getConfig(), {
 								start : toolbar_limit_input.getValue()
 										* toolbar_page_input.getValue()
 										- toolbar_limit_input.getValue(),
@@ -4144,7 +4144,7 @@ var Doing = {
 									: parseInt(allcount / limit) + 1;
 							toolbar_page_input.setValue(value);
 							toolbar_page_input_2.setValue(value);
-							$.hh.pagelist.loadData($.extend(div.getConfig(), {
+							$.ajaxframework.pagelist.loadData($.extend(div.getConfig(), {
 								start : toolbar_limit_input.getValue()
 										* toolbar_page_input.getValue()
 										- toolbar_limit_input.getValue(),
@@ -4154,7 +4154,7 @@ var Doing = {
 						};
 
 						var sxclick = function() {
-							$.hh.pagelist.loadData($.extend(div.getConfig(), {
+							$.ajaxframework.pagelist.loadData($.extend(div.getConfig(), {
 								start : toolbar_limit_input.getValue()
 										* toolbar_page_input.getValue()
 										- toolbar_limit_input.getValue(),
@@ -4188,7 +4188,7 @@ var Doing = {
 					tableDiv.append(table);
 					div.append(tableDiv);
 					div.append(toolbar_2);
-					$.hh.pagelist.loadData($.extend(config, {
+					$.ajaxframework.pagelist.loadData($.extend(config, {
 						start : start,
 						limit : limit,
 						page : page
@@ -4200,7 +4200,7 @@ var Doing = {
 					var basetableDiv = div.find('[pagelistmaindiv=true]');
 					var basetableDivWidth = 0;
 					if (basetableDiv.length == 0) {
-						basetableDivWidth = $.hh.browser.getWidth();
+						basetableDivWidth = $.ajaxframework.browser.getWidth();
 					} else {
 						basetableDivWidth = basetableDiv.width();
 					}
@@ -4259,7 +4259,7 @@ var Doing = {
 					if (row && row.tr) {
 						var pretr = row.tr.prev('tr');
 						if (pretr) {
-							return $.hh.pagelist.getRowByTr(pretr);
+							return $.ajaxframework.pagelist.getRowByTr(pretr);
 						}
 					}
 				},
@@ -4267,14 +4267,14 @@ var Doing = {
 					if (row && row.tr) {
 						var pretr = row.tr.next('tr');
 						if (pretr) {
-							return $.hh.pagelist.getRowByTr(pretr);
+							return $.ajaxframework.pagelist.getRowByTr(pretr);
 						}
 					}
 				},
 				up : function(row) {
 					var pretr = row.tr.prev('tr');
 					if (pretr) {
-						var prow = $.hh.pagelist.getRowByTr(pretr);
+						var prow = $.ajaxframework.pagelist.getRowByTr(pretr);
 						var prowtabletr = prow.tr;
 						var rowtabletr = row.tr;
 
@@ -4292,7 +4292,7 @@ var Doing = {
 				down : function(row) {
 					var pretr = row.tr.next('tr');
 					if (pretr) {
-						var prow = $.hh.pagelist.getRowByTr(pretr);
+						var prow = $.ajaxframework.pagelist.getRowByTr(pretr);
 						var prowtabletr = prow.tr;
 						var rowtabletr = row.tr;
 						prow = prow.data;
@@ -4307,8 +4307,8 @@ var Doing = {
 					}
 				},
 				doUp : function(params) {
-					var selectNode = $.hh.pagelist.getSelectRow(params.pageid);
-					var pnode = $.hh.pagelist.getPreRow(selectNode);
+					var selectNode = $.ajaxframework.pagelist.getSelectRow(params.pageid);
+					var pnode = $.ajaxframework.pagelist.getPreRow(selectNode);
 					if (pnode && pnode.data) {
 						pnode = pnode.data;
 						var data = selectNode.data;
@@ -4321,7 +4321,7 @@ var Doing = {
 							}
 						}, function(result) {
 							if (result.success != false) {
-								$.hh.pagelist.up(selectNode);
+								$.ajaxframework.pagelist.up(selectNode);
 							}
 						});
 					} else {
@@ -4329,8 +4329,8 @@ var Doing = {
 					}
 				},
 				doDown : function(params) {
-					var selectNode = $.hh.pagelist.getSelectRow(params.pageid);
-					var nnode = $.hh.pagelist.getNextRow(selectNode);
+					var selectNode = $.ajaxframework.pagelist.getSelectRow(params.pageid);
+					var nnode = $.ajaxframework.pagelist.getNextRow(selectNode);
 
 					if (nnode && nnode.data) {
 						nnode = nnode.data;
@@ -4344,7 +4344,7 @@ var Doing = {
 							}
 						}, function(result) {
 							if (result.success != false) {
-								$.hh.pagelist.down(selectNode);
+								$.ajaxframework.pagelist.down(selectNode);
 							}
 						});
 					} else {
@@ -4352,7 +4352,7 @@ var Doing = {
 					}
 				},
 				selectRow : function(tr, key, value) {
-					if ($.hh.pagelist.getRowDataByTr(tr)[key] == value) {
+					if ($.ajaxframework.pagelist.getRowDataByTr(tr)[key] == value) {
 						tr.find('[tablewidget=checkbox]').prop("checked", true);
 						tr.addClass("hh_selected");
 					}
@@ -4360,7 +4360,7 @@ var Doing = {
 				getDataList : function(span) {
 					// var rowsData = [];
 					// span.find('[rowdata]').each(function() {
-					// rowsData.push($.hh.pagelist.getRowDataByTr($(this)));
+					// rowsData.push($.ajaxframework.pagelist.getRowDataByTr($(this)));
 					// });
 					// return rowsData;
 					return span.data('data');
@@ -4369,11 +4369,11 @@ var Doing = {
 					var pageid = params.pageid;
 					var action = params.action;
 					var data = params.data || {};
-					$.hh.pagelist.callRows(pageid, function(rows) {
+					$.ajaxframework.pagelist.callRows(pageid, function(rows) {
 						Dialog.confirm({
 							message : '您确认要删除数据吗？',
 							yes : function(result) {
-								var ids = $.hh.objsToStr(rows);
+								var ids = $.ajaxframework.objsToStr(rows);
 								data.ids = ids;
 								Request.request(action, {
 									data : data
@@ -4387,7 +4387,7 @@ var Doing = {
 					});
 				},
 				callRow : function(pageId, callback) {
-					var row = $.hh.pagelist.getSelectData(pageId);
+					var row = $.ajaxframework.pagelist.getSelectData(pageId);
 					if (row == null) {
 						Dialog.infomsg("请选择一条数据！");
 						return;
@@ -4397,7 +4397,7 @@ var Doing = {
 					}
 				},
 				callRows : function(pageId, callback) {
-					var rows = $.hh.pagelist.getSelectDataList(pageId);
+					var rows = $.ajaxframework.pagelist.getSelectDataList(pageId);
 					if (rows.length == 0) {
 						Dialog.infomsg("请选择一条数据！");
 						return;
@@ -4407,21 +4407,21 @@ var Doing = {
 					}
 				},
 				getSelectData : function(pageId) {
-					var row = $.hh.pagelist.getSelectRow(pageId);
+					var row = $.ajaxframework.pagelist.getSelectRow(pageId);
 					if (row) {
 						return row.data;
 					}
 				},
 				getSelectDataList : function(pageId) {
 					var rowsData = [];
-					var rows = $.hh.pagelist.getSelectRows(pageId);
+					var rows = $.ajaxframework.pagelist.getSelectRows(pageId);
 					for (var i = 0; i < rows.length; i++) {
 						rowsData.push(rows[i].data);
 					}
 					return rowsData;
 				},
 				getSelectRow : function(pageId) {
-					var rows = $.hh.pagelist.getSelectRows(pageId);
+					var rows = $.ajaxframework.pagelist.getSelectRows(pageId);
 					if (rows != null && rows.length > 0) {
 						return rows[0];
 					}
@@ -4432,7 +4432,7 @@ var Doing = {
 							function() {
 								if ($(this).attr('tablewidgethead') == null) {
 									var tr = $(this).parent().parent();
-									rowsData.push($.hh.pagelist.getRowByTr(tr));
+									rowsData.push($.ajaxframework.pagelist.getRowByTr(tr));
 								}
 							});
 					return rowsData;
@@ -4458,7 +4458,7 @@ var Doing = {
 					// var id = param.id;
 					// var div = param.div || $('#' + id);
 					// div.setConfig(param);
-					// var config = $.hh.getConfig(div);
+					// var config = $.ajaxframework.getConfig(div);
 					var div = config.widget;
 					var table = div.find('table');
 
@@ -4479,7 +4479,7 @@ var Doing = {
 					table.children().each(function(index) {
 						if ($(this).is('tbody')) {
 							$(this).children().each(function(index) {
-								var config = $.hh.getConfig($(this));
+								var config = $.ajaxframework.getConfig($(this));
 								if (config.title != true) {
 									$(this).remove();
 								}
@@ -4510,7 +4510,7 @@ var Doing = {
 								for (var j = 0; j < columnList.length; j++) {
 									var column = columnList[j];
 									var value = item[column.name];
-									value = $.hh.renderValue(value, column.render, item);
+									value = $.ajaxframework.renderValue(value, column.render, item);
 									var $td = $('<td pagelisttd="'
 											+ column.name
 											+ '" style="word-break: keep-all;white-space:nowrap;" ></td>');
@@ -4572,7 +4572,7 @@ var Doing = {
 												}
 												var itemclickparams = {
 													checked : checked,
-													rowdata : $.hh.pagelist
+													rowdata : $.ajaxframework.pagelist
 															.getRowDataByTr($(this)),
 													clickDom : target.attr('tablewidget')
 												};
@@ -4591,7 +4591,7 @@ var Doing = {
 												}
 												var itemclickparams = {
 													checked : checked,
-													rowdata : $.hh.pagelist
+													rowdata : $.ajaxframework.pagelist
 															.getRowDataByTr($(this)),
 													clickDom : target.attr('tablewidget')
 												};
@@ -4688,14 +4688,14 @@ var Doing = {
 						span.find('[rowdata]').each(function() {
 							var tr = $(this);
 							if (typeof value == "string") {
-								$.hh.pagelist.selectRow(tr, key, value);
+								$.ajaxframework.pagelist.selectRow(tr, key, value);
 							} else if (typeof value == "object") {
 								if (value.sort) {
 									for (var i = 0; i < value.length; i++) {
-										$.hh.pagelist.selectRow(tr, key, value[i][key]);
+										$.ajaxframework.pagelist.selectRow(tr, key, value[i][key]);
 									}
 								} else {
-									$.hh.pagelist.selectRow(tr, key, value[key]);
+									$.ajaxframework.pagelist.selectRow(tr, key, value[key]);
 								}
 							}
 						});
@@ -4705,7 +4705,7 @@ var Doing = {
 								.find('[rowdata]')
 								.each(
 										function() {
-											if ($.hh.pagelist.getRowDataByTr($(this))[key] == value) {
+											if ($.ajaxframework.pagelist.getRowDataByTr($(this))[key] == value) {
 												$(this).find('[tablewidget=checkbox]')
 														.prop("checked", false);
 												$(this).removeClass("hh_selected");
@@ -4713,10 +4713,10 @@ var Doing = {
 										});
 					};
 					object.getDataList = function() {
-						return $.hh.pagelist.getDataList(span);
+						return $.ajaxframework.pagelist.getDataList(span);
 					};
 					object.updateRow = function(rowdata) {
-						var dataList = $.hh.pagelist.getDataList(span);
+						var dataList = $.ajaxframework.pagelist.getDataList(span);
 						var resultDataList = [];
 						for (var i = 0; i < dataList.length; i++) {
 							var data = dataList[i];
@@ -4731,7 +4731,7 @@ var Doing = {
 						});
 					};
 					object.deleteRow = function(rowdata) {
-						var dataList = $.hh.pagelist.getDataList(span);
+						var dataList = $.ajaxframework.pagelist.getDataList(span);
 						var resultDataList = [];
 						for (var i = 0; i < dataList.length; i++) {
 							var data = dataList[i];
@@ -4747,12 +4747,12 @@ var Doing = {
 				}
 			}
 
-			$.hh.gridView = {
+			$.ajaxframework.gridView = {
 				render : function(span, config) {
 					span.empty();
 					var span_id = span.attr('id');
 					if (span_id == null || span_id == '') {
-						span_id = $.hh.getUUID();
+						span_id = $.ajaxframework.getUUID();
 						span.attr('id', span_id);
 					}
 					var ul = $('<ul style="list-style-type: none;	margin: 0;padding: 0;width: 100%;"></ul>');
@@ -4771,13 +4771,13 @@ var Doing = {
 						margin = config.margin;
 					}
 
-					var menuul = $.hh.menu.renderMenu(config, config.rightMenu);
+					var menuul = $.ajaxframework.menu.renderMenu(config, config.rightMenu);
 					span.append(menuul);
 					if (menuul) {
 						menuul.hide();
 						menuul.css({
 							'border' : '1px solid '
-									+ $.hh.property.classObject.themeContent,
+									+ $.ajaxframework.property.classObject.themeContent,
 							'position' : 'absolute',
 							'z-index' : 9999999999
 						});
@@ -4808,7 +4808,7 @@ var Doing = {
 								+ id
 								+ '" class="float_left" style="'
 								+ 'border:1px solid '
-								+ $.hh.property.classObject.themeContent
+								+ $.ajaxframework.property.classObject.themeContent
 								+ ';cursor: pointer;margin: '
 								+ margin
 								+ 'px;padding: 1px;width: '
@@ -4839,7 +4839,7 @@ var Doing = {
 													.css(
 															'border',
 															'1px solid '
-																	+ $.hh.property.classObject.themeHead);
+																	+ $.ajaxframework.property.classObject.themeHead);
 										})
 								.mouseout(
 										function() {
@@ -4848,7 +4848,7 @@ var Doing = {
 													.css(
 															'border',
 															'1px solid '
-																	+ $.hh.property.classObject.themeContent);
+																	+ $.ajaxframework.property.classObject.themeContent);
 										});
 
 						// }
@@ -4893,7 +4893,7 @@ var Doing = {
 				}
 			}
 
-			$.hh.menu = {
+			$.ajaxframework.menu = {
 				render : function(span, config) {
 					span.empty();
 					var dataList = config.data;
@@ -4935,7 +4935,7 @@ var Doing = {
 
 							var li = $('<li style="font-weight:normal;margin:2px;padding:3px;'
 									+ 'border :  1px solid '
-									+ $.hh.property.classObject.themeContent
+									+ $.ajaxframework.property.classObject.themeContent
 									+ '">'
 									+ '<table style="width:100%;">'
 									+ '<tr><td style="text-align:left;"><table><tr><td>&nbsp;'
@@ -4954,7 +4954,7 @@ var Doing = {
 														.css(
 																'border',
 																'1px solid '
-																		+ $.hh.property.classObject.themeHead);
+																		+ $.ajaxframework.property.classObject.themeHead);
 											})
 									.mouseout(
 											function() {
@@ -4962,7 +4962,7 @@ var Doing = {
 														.css(
 																'border',
 																'1px solid '
-																		+ $.hh.property.classObject.themeContent);
+																		+ $.ajaxframework.property.classObject.themeContent);
 											});
 							if (config.imgSize) {
 								li.find('img').width(config.imgSize);
@@ -4998,16 +4998,16 @@ var Doing = {
 				}
 			}
 
-			$.hh.rightMenu = {
+			$.ajaxframework.rightMenu = {
 				render : function(span, config) {
 					var dataList = config.data;
-					var menuul = $.hh.menu.renderMenu(config, dataList);
+					var menuul = $.ajaxframework.menu.renderMenu(config, dataList);
 					span.append(menuul);
 					if (menuul) {
 						menuul.hide();
 						menuul.css({
 							'border' : '1px solid '
-									+ $.hh.property.classObject.themeContent,
+									+ $.ajaxframework.property.classObject.themeContent,
 							'position' : 'absolute',
 							'z-index' : 9999999999
 						});
@@ -5025,16 +5025,16 @@ var Doing = {
 				}
 			}
 
-			$.hh.getUser = function() {
-				return $.hh.getRootFrame().$.hh.property.loginUser;
+			$.ajaxframework.getUser = function() {
+				return $.ajaxframework.getRootFrame().$.ajaxframework.property.loginUser;
 			};
 
-			$.hh.addTab = function(data) {
-				$.hh.setFrameParams(data.id + 'iframe', data.params);
-				$.hh.getRootFrame().addTab(data);
+			$.ajaxframework.addTab = function(data) {
+				$.ajaxframework.setFrameParams(data.id + 'iframe', data.params);
+				$.ajaxframework.getRootFrame().addTab(data);
 			}
 
-			$.hh.timeout = function(config) {
+			$.ajaxframework.timeout = function(config) {
 				var params = {
 					jump : false
 				};
