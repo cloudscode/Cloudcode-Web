@@ -1374,8 +1374,8 @@ $.cc.selectPic = {
 				config.onChange();
 			}
 		}
-		params.openurl = config.selectType == null || config.selectType == '' ? 'jsp-system-tools-picselect'
-				: 'jsp-system-tools-bigpicselect';
+		params.openurl = config.selectType == null || config.selectType == '' ? '../systools/picselect'
+				: '../systools/bigpicselect';
 		params.params = config.params || {};
 		if (params.params.path == null || params.params.path == '') {
 			params.params.path = '/cccommon/images';
