@@ -29,6 +29,7 @@
 	<!-- <import resource="application-security.xml" /> -->
 	<import resource="spring-security.xml"/>	
 	<import resource="applicationContext-cxf.xml" />
+	<import resource="spring-mongodb.xml" />
 	<bean
 		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 	<context:annotation-config />
