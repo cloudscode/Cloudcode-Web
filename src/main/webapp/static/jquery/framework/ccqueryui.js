@@ -474,7 +474,7 @@ $.cc.file = {
 						function() {
 							Dialog
 									.open({
-										url : 'jsp-system-tools-file',
+										url : '../systemfile/file',
 										width : 450,
 										height : 170,
 										params : {
@@ -1745,7 +1745,7 @@ $.cc.uploadpic = {
 			span.find('[type=imgpic]').empty();
 			var path = value;
 			if (value.indexOf(config.path) == -1) {
-				path = 'system-File-download?params={id:\''
+				path = '../systemfile/download?params={id:\''
 						+ value + '\'}';
 			}
 			span.find('[type=imgpic]').append(
@@ -1762,7 +1762,7 @@ $.cc.uploadpic = {
 						function() {
 							Dialog
 									.open({
-										url : 'jsp-system-tools-file?type=pic',
+										url : '../systemfile/file?type=pic',
 										width : 450,
 										height : 170,
 										params : {
@@ -1776,7 +1776,7 @@ $.cc.uploadpic = {
 														.append(
 																'<img  '
 																		+ style
-																		+ ' src="system-File-download?params={id:\''
+																		+ ' src="../systemfile/download?params={id:\''
 																		+ data.id
 																		+ '\'}" />');
 											}
@@ -1831,7 +1831,7 @@ $.cc.uploadpic = {
 			span.find('[type=imgpic]').empty();
 			var path = value;
 			if (value.indexOf('.') == -1) {
-				path = 'system-File-download?params={id:\''
+				path = '../systemfile/download?params={id:\''
 						+ value + '\'}';
 			}
 			span.find('[type=imgpic]').append(
@@ -4372,15 +4372,15 @@ DialogClass.prototype.show = function() {
 							var height = iframe.height || dialog.height;
 
 							if (width) {
-								if (width > $.cc.browser.getWidth()) {
-									width = $.cc.browser.getWidth();
-								}
+//								if (width > $.cc.browser.getWidth()) {
+//									width = $.cc.browser.getWidth();
+//								}
 								param.width = width;
 							}
 							if (height) {
-								if (height > $.cc.browser.getHeight()) {
-									height = $.cc.browser.getHeight();
-								}
+//								if (height > $.cc.browser.getHeight()) {
+//									height = $.cc.browser.getHeight();
+//								}
 								param.height = height;
 							}
 							openthis.data('height', height);

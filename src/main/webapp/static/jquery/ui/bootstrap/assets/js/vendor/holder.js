@@ -148,7 +148,7 @@ function fluid(el, holder, src) {
 function fluid_update() {
 	for (i in fluid_images) {
 		var el = fluid_images[i];
-		if(el && el.getElementsByTagName("td")){
+		if(el && typeof(el.getElementsByTagName)=="function" &&  el.getElementsByTagName("td")){
 			var label = el.getElementsByTagName("td")[0].firstChild;
 			label.data = el.offsetWidth + "x" + el.offsetHeight;
 		}
