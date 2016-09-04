@@ -212,7 +212,270 @@ define(["jquery"], function($) {
 		}
 		return params;
 	}
-	
+	$.cc.renderValue = function(value, render, item) {
+		if (render == 'datetime') {
+			value = $.cc.dateTimeToString(value);
+		} else if (render == 'date') {
+			value = $.cc.dateToString(value);
+		} else if (render == 'bool') {
+			if (value == 1) {
+				value = '<font color=green>是</font>'
+			} else {
+				value = '<font color=red>否</font>'
+			}
+		} else if (render) {
+			if (typeof render == "string") {
+				value = eval(render + "(value,item)");
+			} else {
+				value = render(value, item);
+			}
+		}
+		if (value != 0) {
+			value = value || '';
+		}
+		return value;
+	}
+	$.cc.cmpchar = function(value, length, cr) {
+		var l = length - ((value + "").length);
+		var chr = '';
+		for (var i = 0; i < l; i++) {
+			chr += cr;
+		}
+		return chr + value;
+	}
+	$.cc.dateToString = function(date) {
+		if (date) {
+			date = new Date(date);
+			return date.getFullYear() + '-'
+					+ $.cc.cmpchar((date.getMonth() + 1), 2, '0') + '-'
+					+ $.cc.cmpchar(date.getDate(), 2, '0');
+		} else {
+			return '';
+		}
+	}
+	$.cc.dateTimeToString = function(date) {
+		if (date) {
+			date = new Date(date);
+			return date.getFullYear() + '-'
+					+ $.cc.cmpchar((date.getMonth() + 1), 2, '0') + '-'
+					+ $.cc.cmpchar(date.getDate(), 2, '0') + ' '
+					+ $.cc.cmpchar(date.getHours(), 2, '0') + ':'
+					+ $.cc.cmpchar(date.getMinutes(), 2, '0') + ':'
+					+ $.cc.cmpchar(date.getSeconds(), 2, '0');
+		} else {
+			return '';
+		}
+	}
+	$.cc.millisecondTOHHMMSS = function(millisecond) {
+		if (!millisecond) {
+			return "0天00时00分00秒";
+		}
+		var hour = parseInt(millisecond / (60 * 60 * 1000));
+		var day = parseInt(hour / 24);
+		var minute = parseInt((millisecond - hour * 60 * 60 * 1000) / (60 * 1000));
+		var second = parseInt((millisecond - hour * 60 * 60 * 1000 - minute * 60 * 1000) / 1000);
+		if (second >= 60) {
+			second = second % 60;
+			minute += parseInt(second / 60);
+		}
+		if (minute >= 60) {
+			minute = minute % 60;
+			hour += parseInt(minute / 60);
+		}
+		if (hour >= 24) {
+			hour = hour % 24;
+			day += parseInt(hour / 24);
+		}
+		var sh = "";
+		var sm = "";
+		var ss = "";
+		if (hour < 10) {
+			sh = "0" + hour;
+		} else {
+			sh = hour;
+		}
+		if (minute < 10) {
+			sm = "0" + minute;
+		} else {
+			sm = minute;
+		}
+		if (second < 10) {
+			ss = "0" + second;
+		} else {
+			ss = second;
+		}
+		var returnStr = '';
+		if (day != 0) {
+			returnStr += day + "天";
+		}
+		if (sh != '00') {
+			returnStr += sh + "时";
+		}
+		if (sm != '00') {
+			returnStr += sm + "分";
+		}
+		if (ss != '00') {
+			returnStr += ss + "秒";
+		}
+		return returnStr;
+	}
+	$.cc.stringToDate = function(str) {
+		return new Date(str.replace(/-/g, "/"));
+	}
+	$.cc.toString = function(o) {// 核心函数
+		return JSON.stringify(o);
+		if (o == undefined) {
+			return null;
+		}
+		var r = [];
+		if (typeof o == "string") {
+			if (!isNaN(o)) {
+				return o;
+			} else {
+				return "\'"
+						+ o.replace(/([\'\\])/g, "\\$1").replace(/(\n)/g, "\\n")
+								.replace(/(\r)/g, "\\r").replace(/(\t)/g, "\\t")
+						+ "\'";
+			}
+		}
+		if (typeof o == "object") {
+			if (!o.sort) {
+				for ( var i in o) {
+					var objTostr2Value = $.cc.toString(o[i]);
+					r.push("\'" + i + "\':"
+							+ (objTostr2Value == '' ? "\'\'" : objTostr2Value));
+				}
+				if (!!document.all
+						&& !/^\n?function\s*toString\(\)\s*\{\n?\s*\[native code\]\n?\s*\}\n?\s*$/
+								.test(o.toString)) {
+					r.push("toString:" + o.toString.toString());
+				}
+				r = "{" + r.join() + "}"
+			} else {
+				for (var i = 0; i < o.length; i++)
+					r.push($.cc.toString(o[i]))
+				r = "[" + r.join() + "]";
+			}
+			return r;
+		}
+		return o.toString().replace(/\"\:/g, '":""');
+	}
+	$.cc.iframeLoad = function(iframe, callback) {
+		if (iframe.attachEvent) {
+			iframe.attachEvent("onload", callback);
+		} else {
+			iframe.onload = callback;
+		}
+	}
+	$.cc.isE = function(value) {
+		return new RegExp(/^[a-zA-Z\ \']+$/).test(value);
+	}
+	$.cc.isDate = function(value) {
+		return new RegExp(
+				/^\d{4}-(0\d|1[0-2])-([0-2]\d|3[01])( ([01]\d|2[0-3])\:[0-5]\d\:[0-5]\d)?$/)
+				.test(value)
+				|| new RegExp(
+						/^\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01])$/)
+						.test(value);
+	}
+	$.cc.watermark = function(input, watermark) {
+		var c = 'watermark';
+		input.attr('placeholder', watermark);
+		// if(input.attr('type')=='password'){
+		// input.data('password','1');
+		// }
+		input.data('color', input.css('color'))
+		var e = function() {
+			if ($(this).data('watermark_focus') != '1'
+					|| !$(this).data('watermark_focus')) {
+				var input2 = $(this);
+				var placeholder = input2.attr('placeholder');
+				if (input2.val() && input2.val() != placeholder) {
+					// if(input2.data('password')=='1'){
+					// input2.attr('type','password');
+					// }
+					$(this).data('watermark_value', '0');
+					input2.css('color', input2.data('color'))
+				} else {
+					// if(input2.data('password')=='1'){
+					// input2.attr('type','text');
+					// }
+					$(this).data('watermark_value', '1');
+					input2.val(placeholder);
+					input2.css('color', '#999')
+				}
+			}
+		}
+		input.focus(function() {
+			$(this).data('watermark_focus', '1');
+			var t = $(this).attr('placeholder');
+			if ($(this).val() == t) {
+				$(this).val('');
+			}
+		});
+		input.blur(function() {
+			$(this).data('watermark_focus', '0');
+		}).keyup(function() {
+			$(this).data('watermark_focus', '0');
+		});
+
+		input.change(e).blur(e).focus(e);
+		input.change().blur();
+	}
+
+	$.cc.formatText = function(value, format) {
+		if (format == '#,##0.00') {
+			return Lawyee.outputmoney(value, 2);
+		} else if (format == '#,##0') {
+			return Lawyee.outputmoney(value, 0);
+		} else if (format == '0.00') {
+			if (isNaN(value) || value == "") {
+				return "";
+			}
+			return (Math.round(value * 100) / 100).toFixed(2);
+		} else if (format == '#0.0#') {
+			if (isNaN(value) || value == "") {
+				return "";
+			}
+			return (Math.round(value * 10) / 10).toFixed(1);
+		} else if (format == '#0%') {
+			value = value.replace(/\%/g, "");
+			if (isNaN(value) || value == "") {
+				return "";
+			}
+			return (Math.round(value * 1) / 1) + '%';
+		} else if (format == '#0.0%') {
+			value = value.replace(/\%/g, "");
+			if (isNaN(value) || value == "") {
+				return "";
+			}
+			return (Math.round(value * 10) / 10).toFixed(1) + '%';
+		} else if (format == '#0.00%') {
+			value = value.replace(/\%/g, "");
+			if (isNaN(value) || value == "") {
+				return "";
+			}
+			return (Math.round(value * 100) / 100).toFixed(2) + '%';
+		} else if (format == '¤#0') {
+			value = value.replace(/\￥/g, "");
+			if (isNaN(value) || value == "") {
+				return "";
+			}
+			return '￥' + (Math.round(value * 1) / 1);
+		} else if (format == '¤#0.00') {
+			value = value.replace(/\￥/g, "");
+			if (isNaN(value) || value == "") {
+				return "";
+			}
+			return '￥' + (Math.round(value * 100) / 100).toFixed(2);
+		} else if (format == '¤#,##0') {
+			value = value.replace(/\￥/g, "");
+			value = Lawyee.outputmoney(value, 0)
+			return '￥' + value;
+		} else {
+			return value;
+		}
+	}
 	$.cc.fn = {
 			setAttr : function(span, widget, config) {
 				if (config.class_) {
