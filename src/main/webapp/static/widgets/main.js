@@ -1,4 +1,5 @@
-define(["jquery"], function($) {
+define(["jquery","Dialog","Doing","Request","jqueryui"], function($,Dialog,Doing,Request) {
+	//window.DialogClass=DialogClass;
 	Array.prototype.inArray = function(eeee) {
 		for (aaa = 0; aaa < this.length; aaa++) {
 			if (this[aaa] == eeee) {
@@ -7,7 +8,55 @@ define(["jquery"], function($) {
 		}
 		return false;
 	};
-	
+	/* UUID start */
+	function UUID() {
+		this.id = this.createUUID();
+	}
+	UUID.prototype.valueOf = function() {
+		return this.id;
+	};
+	UUID.prototype.toString = function() {
+		return this.id;
+	};
+	UUID.prototype.createUUID = function() {
+		var dg = new Date(1582, 10, 15, 0, 0, 0, 0);
+		var dc = new Date();
+		var t = dc.getTime() - dg.getTime();
+		var tl = UUID.getIntegerBits(t, 0, 31);
+		var tm = UUID.getIntegerBits(t, 32, 47);
+		var thv = UUID.getIntegerBits(t, 48, 59) + '1'; // version 1, security
+		var csar = UUID.getIntegerBits(UUID.rand(4095), 0, 7);
+		var csl = UUID.getIntegerBits(UUID.rand(4095), 0, 7);
+		var n = UUID.getIntegerBits(UUID.rand(8191), 0, 7)
+				+ UUID.getIntegerBits(UUID.rand(8191), 8, 15)
+				+ UUID.getIntegerBits(UUID.rand(8191), 0, 7)
+				+ UUID.getIntegerBits(UUID.rand(8191), 8, 15)
+				+ UUID.getIntegerBits(UUID.rand(8191), 0, 15); // this last number
+		return tl + tm + thv + csar + csl + n;
+	};
+	UUID.getIntegerBits = function(val, start, end) {
+		var base16 = UUID.returnBase(val, 16);
+		var quadArray = new Array();
+		var quadString = '';
+		var i = 0;
+		for (i = 0; i < base16.length; i++) {
+			quadArray.push(base16.substring(i, i + 1));
+		}
+		for (i = Math.floor(start / 4); i <= Math.floor(end / 4); i++) {
+			if (!quadArray[i] || quadArray[i] == '')
+				quadString += '0';
+			else
+				quadString += quadArray[i];
+		}
+		return quadString;
+	};
+	UUID.returnBase = function(number, base) {
+		return (number).toString(base).toUpperCase();
+	};
+	UUID.rand = function(max) {
+		return Math.floor(Math.random() * (max + 1));
+	};
+	/* UUID END */
 	$.cc = $.cc || {};
 	$.cc.params = {};
 	$.cc.widgetList = [ 'text', 'password', 'radio', 'selectTree', 'selectUser',
@@ -21,7 +70,127 @@ define(["jquery"], function($) {
     	}
     	$.cc.widgetFind += '[xtype=' + $.cc.widgetList[i] + ']';
     }
+    $.cc.button = {
+			render : function(field, config) {
+				field.empty();
+				var $input = $("<button>"
+						+ (config.text == null ? '&nbsp;' : config.text) + "</button>");
+				$.cc.fn.setAttr(field, $input, config);
+				field.append($input);
 
+				var menuId = config.menuId;
+				if (menuId) {
+					$('#' + menuId).hide();
+					$('#' + menuId).css(
+							{
+								'border' : '1px solid '
+										+ $.cc.property.classObject.themeContent,
+								'position' : 'absolute'
+							});
+				}
+
+				$input.button(
+						{
+							disabled : config.disabled,
+							text : (!(config.textHidden == true))
+									&& (config.text != null && config.text != ''),
+							icons : {
+								primary : config.icon
+							}
+						}).click(function() {
+					if (config.onClick) {
+						config.onClick(config.params);
+					}
+					if (menuId) {
+						$(document).one("click", function() {
+							$('#' + menuId).hide();
+						});
+						$('#' + menuId).show().position({
+							my : "right top",
+							at : "right bottom",
+							of : this
+						});
+					}
+					return false;
+				});
+				if (config.itype == 'delete') {
+					// $input.addClass('hh_red_btn');
+					$input.button({
+						icons : {
+							primary : "hh_img_delete"
+						}
+					});
+				} else if (config.itype == 'add') {
+					// $input.addClass('hh_blue_btn');
+					$input.button({
+						icons : {
+							primary : "hh_img_add"
+						}
+					});
+				} else if (config.itype == 'edit') {
+					// $input.addClass('hh_yellow_btn');
+					$input.button({
+						icons : {
+							primary : "hh_img_edit"
+						}
+					});
+				} else if (config.itype == 'refresh') {
+					// $input.addClass('hh_green_btn');
+					$input.button({
+						icons : {
+							primary : "hh_img_refresh"
+						}
+					});
+				} else if (config.itype == 'query') {
+					$input.button({
+						icons : {
+							primary : "hh_img_query"
+						}
+					});
+				} else if (config.itype == 'view') {
+					$input.button({
+						icons : {
+							primary : "hh_img_view"
+						}
+					});
+				} else if (config.itype == 'manager') {
+					$input.button({
+						icons : {
+							primary : "hh_img_setting"
+						}
+					});
+				} else if (config.itype == 'save') {
+					$input.button({
+						icons : {
+							primary : "hh_img_save"
+						}
+					});
+				} else if (config.itype == 'close') {
+					$input.button({
+						icons : {
+							primary : "hh_img_delete"
+						}
+					});
+				} else if (config.itype == 'submit') {
+					$input.button({
+						icons : {
+							primary : "hh_img_green"
+						}
+					});
+				}
+
+			},
+			disabled : function(span) {
+				span.find('button').button({
+					disabled : true
+				});
+			},
+			undisabled : function(span) {
+				span.find('button').button({
+					disabled : false
+				});
+			}
+		};
 	$.cc.browser = {
 			type : null,
 			getWidth : function() {
@@ -91,7 +260,6 @@ define(["jquery"], function($) {
 		}
 		function init() {
 		}
-		
 	$.cc.getRootFrame = function() {
 		if (window.parent && window.parent.set_height != null) {
 			return $.cc.getRootFrame2(window.parent);
@@ -112,7 +280,7 @@ define(["jquery"], function($) {
 	}
 	$.cc.getIframeParams = function() {
 		if (window.frameElement) {
-			var params = $.cc.getRootFrame().$.cc.params[window.frameElement.id];
+			var params = $.cc.getRootFrame().parent.$.cc.params[window.frameElement.id];
 			// delete
 			// $.cc.getRootFrame().$.cc.params[window.frameElement.id];
 			return params || {};
@@ -780,6 +948,188 @@ define(["jquery"], function($) {
 				}
 			}
 		};
+	$.cc.nheight = function(dom, height, mheight) {
+		if (height && height > 0) {
+			var funObj = {
+				fun : function(bodyHeight) {
+					var hheight = bodyHeight - height;
+					if (mheight >= hheight) {
+						hheight = mheight;
+					}
+					var obj = {
+						'height' : hheight
+					}
+					if (!this.dom.hasClass('cke_contents')) {
+						obj['overflow'] = 'auto';
+					}
+					this.dom.css(obj);
+				},
+				'dom' : dom,
+				'zuixiao' : mheight
+			};
+			$.cc.setHeightMap[$.cc.getUUID()] = funObj;
+			funObj.fun($.cc.browser.getHeight());
+		}
+	};
+	var DialogClass = function(params) {
+		this.width = 300;
+		this.height = 160;
+		this.id = $.cc.getUUID();
+		this.title = '&nbsp;';
+		this.message = '提示内容';
+		this.modal = true;
+		this.url = null;
+		this.type = 'hh_info';
+		this.buttons = [ {
+			text : '确定',
+			event : function() {
+				$(this).dialog("close");
+			}
+		} ];
+		$.extend(this, params);
+		if (this.url) {
+			this.buttons = [];
+		}
+	}
+
+	DialogClass.prototype.show = function() {
+		var dialog = this;
+		var id = this.id;
+		var body = $(document.getElementsByTagName("BODY")[0]);
+		var html = '<div id="' + id + '" title="' + this.title
+				+ '" style="overflow-x:hidden;overflow-y:hidden;">';
+		if (this.url != null) {
+			// var form = $(this.formHtml);
+			var doinghtml = '<div id="' + id + '_div" style="height:55px;">'
+					+ Doing.doingdivhtml3 + '</div>';
+			html += doinghtml + "<iframe id='" + id + "iframe' name='" + id
+					+ "iframe' frameborder=0  width=100% height=100% src='"
+					+ Request.getHref(this.url, this.urlParams) + "' />";
+			if (dialog.params) {
+				$.cc.setFrameParams(id + 'iframe', dialog.params);
+			}
+		} else {
+			this.height += $(this.message).text().length / 10 * 16;
+			html += this.message;
+		}
+		html += '</div>';
+
+		body.append($(html));
+
+		var buttonList = this.buttons;
+		var buttons = {};
+		for (var i = 0; i < buttonList.length; i++) {
+			buttons[buttonList[i].text] = buttonList[i].event;
+		}
+
+		if (this.width > $.cc.browser.getWidth()) {
+			this.width = $.cc.browser.getWidth();
+		}
+		if (this.height > $.cc.browser.getHeight()) {
+			this.height = $.cc.browser.getHeight();
+		}
+
+		$("#" + id).dialog(
+				{
+					// resizable : false,
+					height : this.url != null ? 100 : this.height,
+					width : this.url != null ? 200 : this.width,
+					title : this.url != null ? "请稍后..." : null,
+					modal : this.modal,
+					position : {
+						my : "center",
+						at : this.position_at || "center",
+						of : window
+					},
+					closeText : '关闭',
+					buttons : buttons,
+					close : function(event, ui) {
+						var iframe = document.getElementById(id + 'iframe');
+						if (iframe) {
+							iframe.src = "about:blank";
+							iframe.parentElement.removeChild(iframe);
+						}
+						$(this).remove();
+					},
+					open : function() {
+						var openthis = $(this);
+						var titlehead = openthis.prev('div');
+						titlehead.dblclick(function() {
+							if (openthis.data('big') == null) {
+								openthis.dialog({
+									width : $.cc.browser.getWidth() - 30,
+									height : $.cc.browser.getHeight() - 30,
+									position : {
+										my : "center",
+										at : "center",
+										of : window
+									}
+								});
+								openthis.data('big', true);
+							} else {
+								openthis.dialog({
+									width : openthis.data('width'),
+									height : openthis.data('height'),
+									position : {
+										my : "center",
+										at : "center",
+										of : window
+									}
+								});
+								openthis.data('big', null);
+							}
+						});
+						var iframe = window.frames[id + 'iframe'];
+						if (iframe) {
+							var iframeLoad = function() {
+								$('#' + id + '_div').remove();
+								var param = {};
+								if (dialog.title == null || dialog.title == ''
+										|| dialog.title == '&nbsp;') {
+									param.title = iframe.document.title;
+								} else {
+									param.title = dialog.title;
+								}
+								var width = iframe.width || dialog.width;
+								var height = iframe.height || dialog.height;
+
+								if (width) {
+//									if (width > $.cc.browser.getWidth()) {
+//										width = $.cc.browser.getWidth();
+//									}
+									param.width = width;
+								}
+								if (height) {
+//									if (height > $.cc.browser.getHeight()) {
+//										height = $.cc.browser.getHeight();
+//									}
+									param.height = height;
+								}
+								openthis.data('height', height);
+								openthis.data('width', width);
+								openthis.dialog(param);
+							}
+							$.cc.iframeLoad(iframe, iframeLoad);
+							/*
+							 * var agt = window.navigator.userAgent; var isGecko =
+							 * agt.toLowerCase().indexOf("gecko") != -1; if
+							 * (!isGecko) { alert(1);
+							 * iframe.attachEvent("onreadystatechange", function()
+							 * {// 在ie下可以给iframe绑定onreadystatechange事件 alert(1); if
+							 * ((/loaded|complete/)
+							 * .test(self.innerFrame.readyState)) { iframeLoad(); }
+							 * }); } else { iframe.onload = iframeLoad; };
+							 */
+						}
+					}
+				});
+	};
+	if(!this.window.DialogClass && !window.parent.DialogClass){
+		this.window.DialogClass=DialogClass;
+	}else if(window.parent.DialogClass){
+		this.window.DialogClass=window.parent.DialogClass;
+	}
+	
 	//
 	var parentTheme = $.cc.getRootFrame().$('#jqueryuicss').attr('href');
 	var theme = $('#jqueryuicss').attr('href');
@@ -975,4 +1325,5 @@ define(["jquery"], function($) {
 	}
 	init();
 	
+	return $;
 });

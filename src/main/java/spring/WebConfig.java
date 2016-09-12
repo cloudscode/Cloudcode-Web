@@ -25,7 +25,10 @@ import com.cloudcode.framework.annotation.ModuleConfig;
 	com.cloudcode.organization.ProjectConfig.class,
 	com.cloudcode.tk.ProjectConfig.class,
 	com.cloudcode.task.ProjectConfig.class,
-	com.cloudcode.cxf.ProjectConfig.class
+	com.cloudcode.cxf.ProjectConfig.class,
+	com.cloudcode.system.ProjectConfig.class,
+	//com.cloudcode.activemq.ProjectConfig.class,
+	com.cloudcode.workflow.ProjectConfig.class
 })
 public class WebConfig {
 	@Autowired

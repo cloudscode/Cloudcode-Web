@@ -1,11 +1,5 @@
-//define("cc/text",
-//        ["jquery"],
-//        function(text) {
-//	 console.log( text) // OK
-//       }
-//    );
-
 define(["jquery"], function($) {
+	$.cc = $.cc || {};
 $.cc.text ={
 	render : function(span, config) {
 		span.empty();

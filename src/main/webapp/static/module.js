@@ -1,50 +1,34 @@
-//debugger;
-//requirejs([contextPath+"/static/jquery/jquery-1.10.2.js"], function($) {
-//   console.log($);
-//});
-
 requirejs.config({
     baseUrl: contextPath+'/static',
     paths: {
-        // the left side is the module ID,
-        // the right side is the path to
-        // the jQuery file, relative to baseUrl.
-        // Also, the path should NOT include
-        // the '.js' file extension. This example
-        // is using jQuery 1.9.0 located at
-        // js/lib/jquery-1.9.0.js, relative to
-        // the HTML page.
         jquery: 'jquery/jquery-1.10.2',
+        jqueryui: 'jquery/ui/jquery-ui-1.10.3.custom.min',
+        //jquerylayout: 'jquery/layout/jquery.layout-latest.min',
+        WdatePicker: 'plugin/My97DatePicker/WdatePicker',
         text:'widgets/text/text',
-        main:'widgets/main'
+        main:'widgets/main',
+        select:'widgets/select/select',
+        Dialog:'widgets/dialog/dialog',
+        DialogClass:'widgets/dialog/dalogClass',
+        Doing:'widgets/dialog/doing',
+        Request:'widgets/request/request',
+        tree:'widgets/tree/tree',
+        ztree:'jquery/ztree/3.5.15/js/jquery.ztree.all-3.5.min',
+        check:'widgets/check/check',
+        checkbox:'widgets/check/checkbox',
+        date:'widgets/date/date',
+        radio:'widgets/radio/radio',
+    },
+    shim:{
+        'jqueryui':['jquery'],
+        'jquerylayout':['jquery'],
+    	'ztree':['jquery'],
+    	'date':['WdatePicker']
     }
 });
-//define(['jquery'], function ($) {
-//	
-//	debugger;
+requirejs(['jquery']);
+//require(['text'], function (text){
+//
 //});
-//console.log($);
-
-requirejs(['jquery'], function( $ ) {//debugger;
-   // console.log( $ ) // OK
-	$.cc={};
-	
-});
-require(['text'], function (text){
-//	console.log( text);
-//	$("[xtype]").each(function() {
-//		text.render();
-//	});
-});
-requirejs(['jquery','main'], function( $ ) {
-	$("[xtype]").each(function() {
-		$(this).render('initRender');
-	});
-});
-
-
-
-//var text =require(["text"]);
-//console.log( text);
 
 
