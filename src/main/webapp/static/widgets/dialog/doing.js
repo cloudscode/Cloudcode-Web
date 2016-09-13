@@ -1,5 +1,5 @@
 define(["jquery"], function($) {
-	var Doing = {
+	var Doing= {
 			doingdivhtml : '<div id="doing" class="hh_overlay"></div>',
 			doingdivhtml2 : '<div id="loading" class="hh_loading">'
 					+ '<div class="loading-indicator">'
@@ -27,5 +27,6 @@ define(["jquery"], function($) {
 				parneframe.$("#loading").fadeIn(200);
 			}
 		};
+	window.Doing =Doing;
 	return Doing;
 });

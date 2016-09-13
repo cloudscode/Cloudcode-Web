@@ -6,7 +6,7 @@
 				Dialog.msgdiv.fadeOut(500);
 			},
 			getMsgDiv : function(config) {
-				return '<div bgdiv=true  class="hh_'
+				return '<div bgdiv=true  class="cc_'
 						+ config.type
 						+ '" style="border-radius: 8px;	-moz-border-radius: 8px;		margin-top: 2px;	padding: 10px 15px;">'
 						+ '<table ><tr>	<td  ><div imgdiv="true" class="hh_img_'
@@ -21,7 +21,7 @@
 				var time = config.time || 2000;
 				var type = config.type;
 				var parneframe = $.cc.getRootFrame();
-				if (parneframe.Dialog.msgdiv == null) {
+				if (parneframe.Dialog && parneframe.Dialog.msgdiv == null) {
 					parneframe.Dialog.msgdiv = parneframe
 							.$('<div  id="msg-div" style="position: absolute;left: 35%;top: 10px;width: 300px;z-index: 20000000;">'
 									+ Dialog.getMsgDiv({

@@ -1,5 +1,5 @@
 define(["jquery","Dialog","Doing","Request","jqueryui"], function($,Dialog,Doing,Request) {
-	//window.DialogClass=DialogClass;
+	window.Dialog=Dialog;
 	Array.prototype.inArray = function(eeee) {
 		for (aaa = 0; aaa < this.length; aaa++) {
 			if (this[aaa] == eeee) {
@@ -70,127 +70,269 @@ define(["jquery","Dialog","Doing","Request","jqueryui"], function($,Dialog,Doing
     	}
     	$.cc.widgetFind += '[xtype=' + $.cc.widgetList[i] + ']';
     }
-    $.cc.button = {
-			render : function(field, config) {
-				field.empty();
-				var $input = $("<button>"
-						+ (config.text == null ? '&nbsp;' : config.text) + "</button>");
-				$.cc.fn.setAttr(field, $input, config);
-				field.append($input);
+//    $.cc.button = {
+//			render : function(field, config) {
+//				field.empty();
+//				var $input = $("<button>"
+//						+ (config.text == null ? '&nbsp;' : config.text) + "</button>");
+//				$.cc.fn.setAttr(field, $input, config);
+//				field.append($input);
+//
+//				var menuId = config.menuId;
+//				if (menuId) {
+//					$('#' + menuId).hide();
+//					$('#' + menuId).css(
+//							{
+//								'border' : '1px solid '
+//										+ $.cc.property.classObject.themeContent,
+//								'position' : 'absolute'
+//							});
+//				}
+//
+//				$input.button(
+//						{
+//							disabled : config.disabled,
+//							text : (!(config.textHidden == true))
+//									&& (config.text != null && config.text != ''),
+//							icons : {
+//								primary : config.icon
+//							}
+//						}).click(function() {
+//					if (config.onClick) {
+//						config.onClick(config.params);
+//					}
+//					if (menuId) {
+//						$(document).one("click", function() {
+//							$('#' + menuId).hide();
+//						});
+//						$('#' + menuId).show().position({
+//							my : "right top",
+//							at : "right bottom",
+//							of : this
+//						});
+//					}
+//					return false;
+//				});
+//				if (config.itype == 'delete') {
+//					// $input.addClass('hh_red_btn');
+//					$input.button({
+//						icons : {
+//							primary : "hh_img_delete"
+//						}
+//					});
+//				} else if (config.itype == 'add') {
+//					// $input.addClass('hh_blue_btn');
+//					$input.button({
+//						icons : {
+//							primary : "hh_img_add"
+//						}
+//					});
+//				} else if (config.itype == 'edit') {
+//					// $input.addClass('hh_yellow_btn');
+//					$input.button({
+//						icons : {
+//							primary : "hh_img_edit"
+//						}
+//					});
+//				} else if (config.itype == 'refresh') {
+//					// $input.addClass('hh_green_btn');
+//					$input.button({
+//						icons : {
+//							primary : "hh_img_refresh"
+//						}
+//					});
+//				} else if (config.itype == 'query') {
+//					$input.button({
+//						icons : {
+//							primary : "hh_img_query"
+//						}
+//					});
+//				} else if (config.itype == 'view') {
+//					$input.button({
+//						icons : {
+//							primary : "hh_img_view"
+//						}
+//					});
+//				} else if (config.itype == 'manager') {
+//					$input.button({
+//						icons : {
+//							primary : "hh_img_setting"
+//						}
+//					});
+//				} else if (config.itype == 'save') {
+//					$input.button({
+//						icons : {
+//							primary : "hh_img_save"
+//						}
+//					});
+//				} else if (config.itype == 'close') {
+//					$input.button({
+//						icons : {
+//							primary : "hh_img_delete"
+//						}
+//					});
+//				} else if (config.itype == 'submit') {
+//					$input.button({
+//						icons : {
+//							primary : "hh_img_green"
+//						}
+//					});
+//				}
+//
+//			},
+//			disabled : function(span) {
+//				span.find('button').button({
+//					disabled : true
+//				});
+//			},
+//			undisabled : function(span) {
+//				span.find('button').button({
+//					disabled : false
+//				});
+//			}
+//		};
+    $.cc.property = {
+    		img_add : '/cccommon/images/extjsico/add.gif',
+    		img_delete : '/cccommon/images/extjsico/delete2.gif',
+    		img_edit : '/cccommon/images/extjsico/edit.gif',
+    		img_email_open : '/cccommon/images/icons/email/email_open.png',
+    		img_email : '/cccommon/images/icons/email/email.png',
+    		img_email_close : '/cccommon/images/icons/email/email_close.gif',
+    		img_refresh : '/cccommon/images/icons/arrow/arrow_refresh.png',
+    		img_excel : '/cccommon/images/myimage/excel.png',
+    		img_wenjianjia : '/cccommon/images/framework/wenjianjia.jpg',
+    		img_wenjian : '/cccommon/images/framework/wenjian.jpg',
+    		loginUser : {},
+    		execLoad : {},
+    		classObject : {
+    			'base' : {
+    				'class' : 'base',
+    				'content' : '#e6e6e6',
+    				'head' : '#d3d3d3'
+    			},
+    			'black-tie' : {
+    				'class' : 'black-tie',
+    				'content' : '#a3a3a3',
+    				'head' : '#333333'
+    			},
+    			'blitzer' : {
+    				'class' : 'blitzer',
+    				'content' : '#e3a1a1',
+    				'head' : '#cc0000'
+    			},
+    			'cupertino' : {
+    				'class' : 'cupertino',
+    				'content' : '#deedf7',
+    				'head' : '#aed0ea'
+    			},
+    			'dark-hive' : {
+    				'class' : 'dark-hive',
+    				'content' : '#555555',
+    				'head' : '#333333'
+    			},
+    			'dot-luv' : {
+    				'class' : 'dot-luv',
+    				'content' : '#d9d9d9',
+    				'head' : '#0b3e6f'
+    			},
+    			'eggplant' : {
+    				'class' : 'eggplant',
+    				'content' : '#7e7783',
+    				'head' : '#3d3644'
+    			},
+    			'excite-bike' : {
+    				'class' : 'excite-bike',
+    				'content' : '#aaaaaa',
+    				'head' : '#222222'
+    			},
+    			'flick' : {
+    				'class' : 'flick',
+    				'content' : '#dddddd',
+    				'head' : '#444444'
+    			},
+    			'hot-sneaks' : {
+    				'class' : 'hot-sneaks',
+    				'content' : '#aaaaaa',
+    				'head' : '#2c4359'
+    			},
+    			'humanity' : {
+    				'class' : 'humanity',
+    				'content' : '#d49768',
+    				'head' : '#cb842e'
+    			},
+    			'le-frog' : {
+    				'class' : 'le-frog',
+    				'content' : '#72b42d',
+    				'head' : '#285c00'
+    			},
+    			'mint-choc' : {
+    				'class' : 'mint-choc',
+    				'content' : '#695649',
+    				'head' : '#453326'
+    			},
+    			'overcast' : {
+    				'class' : 'overcast',
+    				'content' : '#dddddd',
+    				'head' : '#444444'
+    			},
+    			'pepper-grinder' : {
+    				'class' : 'pepper-grinder',
+    				'content' : '#d4d1bf',
+    				'head' : '#453821'
+    			},
+    			'redmond' : {
+    				'class' : 'redmond',
+    				'content' : '#a6c9e2',
+    				'head' : '#4297d7'
+    			},
+    			'smoothness' : {
+    				'class' : 'smoothness',
+    				'content' : '#e6e6e6',
+    				'head' : '#d3d3d3'
+    			},
+    			'south-street' : {
+    				'class' : 'south-street',
+    				'content' : '#f5f3e5',
+    				'head' : '#dfd9c3'
+    			},
+    			'start' : {
+    				'class' : 'start',
+    				'content' : '#a6c9e2',
+    				'head' : '#2191c0'
+    			},
+    			'sunny' : {
+    				'class' : 'sunny',
+    				'content' : '#feeebd',
+    				'head' : '#8e846b'
+    			},
+    			'swanky-purse' : {
+    				'class' : 'swanky-purse',
+    				'content' : '#efec9f',
+    				'head' : '#443113'
+    			},
+    			'trontastic' : {
+    				'class' : 'trontastic',
+    				'content' : '#9fda58',
+    				'head' : '#000000'
+    			},
+    			'ui-darkness' : {
+    				'class' : 'ui-darkness',
+    				'content' : '#666666',
+    				'head' : '#000000'
+    			},
+    			'ui-lightness' : {
+    				'class' : 'ui-lightness',
+    				'content' : '#f6a828',
+    				'head' : '#e78f08'
+    			},
+    			'vader' : {
+    				'class' : 'vader',
+    				'content' : '#888888',
+    				'head' : '#404040'
+    			}
+    		}
+    	};
 
-				var menuId = config.menuId;
-				if (menuId) {
-					$('#' + menuId).hide();
-					$('#' + menuId).css(
-							{
-								'border' : '1px solid '
-										+ $.cc.property.classObject.themeContent,
-								'position' : 'absolute'
-							});
-				}
-
-				$input.button(
-						{
-							disabled : config.disabled,
-							text : (!(config.textHidden == true))
-									&& (config.text != null && config.text != ''),
-							icons : {
-								primary : config.icon
-							}
-						}).click(function() {
-					if (config.onClick) {
-						config.onClick(config.params);
-					}
-					if (menuId) {
-						$(document).one("click", function() {
-							$('#' + menuId).hide();
-						});
-						$('#' + menuId).show().position({
-							my : "right top",
-							at : "right bottom",
-							of : this
-						});
-					}
-					return false;
-				});
-				if (config.itype == 'delete') {
-					// $input.addClass('hh_red_btn');
-					$input.button({
-						icons : {
-							primary : "hh_img_delete"
-						}
-					});
-				} else if (config.itype == 'add') {
-					// $input.addClass('hh_blue_btn');
-					$input.button({
-						icons : {
-							primary : "hh_img_add"
-						}
-					});
-				} else if (config.itype == 'edit') {
-					// $input.addClass('hh_yellow_btn');
-					$input.button({
-						icons : {
-							primary : "hh_img_edit"
-						}
-					});
-				} else if (config.itype == 'refresh') {
-					// $input.addClass('hh_green_btn');
-					$input.button({
-						icons : {
-							primary : "hh_img_refresh"
-						}
-					});
-				} else if (config.itype == 'query') {
-					$input.button({
-						icons : {
-							primary : "hh_img_query"
-						}
-					});
-				} else if (config.itype == 'view') {
-					$input.button({
-						icons : {
-							primary : "hh_img_view"
-						}
-					});
-				} else if (config.itype == 'manager') {
-					$input.button({
-						icons : {
-							primary : "hh_img_setting"
-						}
-					});
-				} else if (config.itype == 'save') {
-					$input.button({
-						icons : {
-							primary : "hh_img_save"
-						}
-					});
-				} else if (config.itype == 'close') {
-					$input.button({
-						icons : {
-							primary : "hh_img_delete"
-						}
-					});
-				} else if (config.itype == 'submit') {
-					$input.button({
-						icons : {
-							primary : "hh_img_green"
-						}
-					});
-				}
-
-			},
-			disabled : function(span) {
-				span.find('button').button({
-					disabled : true
-				});
-			},
-			undisabled : function(span) {
-				span.find('button').button({
-					disabled : false
-				});
-			}
-		};
 	$.cc.browser = {
 			type : null,
 			getWidth : function() {
@@ -1324,6 +1466,16 @@ define(["jquery","Dialog","Doing","Request","jqueryui"], function($,Dialog,Doing
 	} catch (e) {
 	}
 	init();
+	var hh_onload = window.onload;
+
+		if($.cc.property){
+			for ( var p in $.cc.property.execLoad) {
+				$.cc.property.execLoad[p]();
+			}
+		}
+		if (hh_onload) {
+			hh_onload();
+		}
 	
 	return $;
 });
