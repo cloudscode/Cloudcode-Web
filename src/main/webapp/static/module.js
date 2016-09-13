@@ -5,6 +5,10 @@ requirejs.config({
         jqueryui: 'jquery/ui/jquery-ui-1.10.3.custom.min',
         //jquerylayout: 'jquery/layout/jquery.layout-latest.min',
         WdatePicker: 'plugin/My97DatePicker/WdatePicker',
+        validationEnginezn:'plugin/validation/jquery.validationEngine-zh_CN',
+        validationEngine:'plugin/validation/jquery.validationEngine',
+        CKEditor:'plugin/ckeditor/ckeditor',
+        CKConfig:'plugin/ckeditor/config',
         text:'widgets/text/text',
         main:'widgets/main',
         select:'widgets/select/select',
@@ -18,12 +22,21 @@ requirejs.config({
         checkbox:'widgets/check/checkbox',
         date:'widgets/date/date',
         radio:'widgets/radio/radio',
+        textarea:'widgets/text/textarea',
+        password:'widgets/text/password',
+        ckeditor:'widgets/text/ckeditor',
+        button:'widgets/button/button',
+        validation:'widgets/validation/validation'
     },
     shim:{
         'jqueryui':['jquery'],
         'jquerylayout':['jquery'],
     	'ztree':['jquery'],
-    	'date':['WdatePicker']
+    	'date':['WdatePicker'],
+    	'CKConfig':['CKEditor'],
+    	'ckeditor':['CKConfig'],
+    	'validationEngine':['jquery','validationEnginezn'],
+    	'validation':['validationEngine']
     }
 });
 requirejs(['jquery']);
