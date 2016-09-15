@@ -6,9 +6,9 @@ define(["jquery","Request"], function($,Request) {
 				var name = config.name;
 				var select = $('<select></select>');
 				$.cc.fn.setAttr(span, select, config);
-				select.addClass('hh_select');
+				select.addClass('cc_select');
 				select.append('<option value ="">请选择</option>');
-				var div = $('<div class="hh_select_div"></div>');
+				var div = $('<div class="cc_select_div"></div>');
 				div.append(select);
 				span.append(div);
 				if (config.data) {

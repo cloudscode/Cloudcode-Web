@@ -134,17 +134,17 @@ input[type="radio"],input[type="checkbox"] {
 	border: 1px solid #B5B8C8;
 	/*background: #FFF url('/img/form/text-bg.gif') repeat-x;*/
 }
-.hh_select {
+.cc_select {
 	/*display: block;*/
 	width: 100%;
 	border: 0px solid #B5B8C8;
-	height: 23px;
+	height: 17px;
 	/*line-height: 32px;
 	font-size: 13px;
 	vertical-align:middle;
 	background: #FFF url('/img/form/text-bg.gif') repeat-x;*/
 }
-.hh_select_div {
+.cc_select_div {
 	padding: 4px 2px 2px 2px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -153,7 +153,7 @@ input[type="radio"],input[type="checkbox"] {
 	border: 1px solid #B5B8C8;
 	height: 26px;
 }
-.hh_select  option {
+.cc_select  option {
 	border: 0px solid #B5B8C8;
 	font-size: 13px;
 }
