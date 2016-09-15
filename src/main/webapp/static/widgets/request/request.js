@@ -44,9 +44,8 @@ define(["jquery","Dialog","Doing"], function($,Dialog,Doing) {
 									return;
 								}
 								Doing.hide();
-								if ((resulttext != null && resulttext != '' && resulttext != 'null')
-										&& result == null) {
-									Dialog.error(resulttext);
+								if (resulttext.code==-1) {
+									Dialog.error(resulttext.description);
 									return;
 								}
 								result = result || {

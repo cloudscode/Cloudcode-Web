@@ -153,7 +153,6 @@
 					if (tab.length > 0) {
 						tab.find('span').trigger('click');
 					} else if (dialog) {
-						dialog.dialog("close");
 						$(".ui-dialog-titlebar-close",parneframe.parent.document).click();
 					}
 				}

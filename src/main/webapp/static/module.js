@@ -36,8 +36,9 @@ requirejs.config({
     	'date':['WdatePicker'],
     	'CKConfig':['CKEditor'],
     	'ckeditor':['CKConfig'],
+    	'validationEnginezn':['jquery'],
     	'validationEngine':['jquery','validationEnginezn'],
-    	'validation':['validationEngine']
+    	'validation':['jquery','validationEngine']
     }
 });
 requirejs(['jquery']);

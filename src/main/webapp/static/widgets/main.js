@@ -362,7 +362,42 @@ define(["jquery","Dialog","Doing","Request","jqueryui","button"], function($,Dia
 				}
 			}
 		}
-	
+	if (window.navigator.userAgent.indexOf("MSIE") >= 1) {
+		var g = window.navigator.userAgent.substring(30, 33);
+		if (g == "6.0") {
+			$.cc.browser.type = "IE6";
+		} else if (g == "7.0") {
+			$.cc.browser.type = "IE7";
+		} else if (g == "8.0") {
+			$.cc.browser.type = "IE8";
+		} else if (g == "9.0") {
+			$.cc.browser.type = "IE9";
+		} else if (g == "10.") {
+			$.cc.browser.type = "IE10";
+		} else {
+			$.cc.browser.type = "IEOther";
+		}
+	} else {
+		if (window.navigator.userAgent.indexOf("Firefox") >= 1) {
+			$.cc.browser.type = "Firefox";
+		} else if (window.navigator.userAgent.indexOf("Opera") >= 0) {
+			$.cc.browser.type = "Opera";
+		} else if (window.navigator.userAgent.indexOf("Chrome") >= 0) {
+			$.cc.browser.type = "Chrome";
+		} else if (window.navigator.userAgent.indexOf("Safari") >= 1) {
+			$.cc.browser.type = "Safari";
+		} else {
+			$.cc.browser.type = "Other";
+		}
+	}
+	$.cc.browser.getMainWidth = function() {
+		var win = $.cc.getRootFrame();
+		return win.$.cc.browser.getWidth();
+	};
+	$.cc.browser.getMainHeight = function() {
+		var win = $.cc.getRootFrame();
+		return win.$.cc.browser.getHeight();
+	};
 	var HeightSet = {
 			cResizeTimer : null,
 			triggerCustomHeightSet : function() {
@@ -1140,16 +1175,18 @@ define(["jquery","Dialog","Doing","Request","jqueryui","button"], function($,Dia
 		var body = $(document.getElementsByTagName("BODY")[0]);
 		var html = '<div id="' + id + '" title="' + this.title
 				+ '" style="overflow-x:hidden;overflow-y:hidden;">';
+		var  src='';
 		if (this.url != null) {
 			// var form = $(this.formHtml);
 			var doinghtml = '<div id="' + id + '_div" style="height:55px;">'
 					+ Doing.doingdivhtml3 + '</div>';
 			html += doinghtml + "<iframe id='" + id + "iframe' name='" + id
 					+ "iframe' frameborder=0  width=100% height=100% src='"
-					+ Request.getHref(this.url, this.urlParams) + "' />";
+					+ '' + "' />";
 			if (dialog.params) {
 				$.cc.setFrameParams(id + 'iframe', dialog.params);
 			}
+			src=Request.getHref(this.url, this.urlParams);
 		} else {
 			this.height += $(this.message).text().length / 10 * 16;
 			html += this.message;
@@ -1170,7 +1207,7 @@ define(["jquery","Dialog","Doing","Request","jqueryui","button"], function($,Dia
 		if (this.height > $.cc.browser.getHeight()) {
 			this.height = $.cc.browser.getHeight();
 		}
-
+		$("#" + id+ 'iframe').attr('src',src);
 		$("#" + id).dialog(
 				{
 					// resizable : false,
