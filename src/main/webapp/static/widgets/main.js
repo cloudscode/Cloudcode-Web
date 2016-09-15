@@ -1,4 +1,4 @@
-define(["jquery","Dialog","Doing","Request","jqueryui"], function($,Dialog,Doing,Request) {
+define(["jquery","Dialog","Doing","Request","jqueryui","button"], function($,Dialog,Doing,Request) {
 	window.Dialog=Dialog;
 	Array.prototype.inArray = function(eeee) {
 		for (aaa = 0; aaa < this.length; aaa++) {

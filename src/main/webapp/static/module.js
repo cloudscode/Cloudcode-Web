@@ -26,7 +26,8 @@ requirejs.config({
         password:'widgets/text/password',
         ckeditor:'widgets/text/ckeditor',
         button:'widgets/button/button',
-        validation:'widgets/validation/validation'
+        validation:'widgets/validation/validation',
+        combobox:'widgets/combobox/combobox'
     },
     shim:{
         'jqueryui':['jquery'],
