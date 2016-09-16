@@ -529,6 +529,8 @@ define(["jquery","Dialog","Doing","Request","jqueryui","button"], function($,Dia
 	}
 	$.cc.toObject = function(string) {
 		try {
+			if(typeof(string)=="object")
+			{return string;}
 			var j = "(" + string + ")";
 			return eval(j);
 		} catch (e) {
@@ -967,7 +969,7 @@ define(["jquery","Dialog","Doing","Request","jqueryui","button"], function($,Dia
 					span.find('textarea').val('');
 					var tableName = config.tableName;
 					var findTextAction = config.findTextAction
-							|| 'system-GlobalComboBoxTree-findTextById';
+							|| contextPath+'/syscomboboxtree/findTextById';
 					if (value && value != 'root'
 							&& (tableName || config.findTextAction)) {
 						Request.request(findTextAction, {
