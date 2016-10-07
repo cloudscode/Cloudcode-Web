@@ -89,7 +89,7 @@ define(["jquery",'ztree'], function($) {
 						enable : config.url == null ? false : true,
 						url : config.url,
 						otherParam : otherParam,
-						autoParam : [ "id=node" ]
+						autoParam : [ "id" ]
 					},
 					callback : {
 						onAsyncSuccess : function(event, treeId, treeNode, msg) {

@@ -4,7 +4,7 @@ define(["jquery","Dialog"], function($,Dialog) {
 	$.cc.selectTree = {
 		render : function(span, config) {
 			$.cc.fn.renderSelect(span, config, {
-				openurl : '../systools/treeselect'
+				openurl : contextPath+'/systools/treeselect'
 			});
 			span.setValue(config.value || '');
 		},
