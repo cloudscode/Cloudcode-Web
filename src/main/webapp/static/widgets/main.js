@@ -1513,7 +1513,7 @@ define(["jquery","Dialog","Doing","Request","jqueryui","button"], function($,Dia
 			}
 		}
 		if (hh_onload) {
-			hh_onload();
+			//hh_onload();
 		}
 	
 	return $;

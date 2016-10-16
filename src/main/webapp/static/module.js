@@ -27,7 +27,10 @@ requirejs.config({
         ckeditor:'widgets/text/ckeditor',
         button:'widgets/button/button',
         validation:'widgets/validation/validation',
-        combobox:'widgets/combobox/combobox'
+        combobox:'widgets/combobox/combobox',
+        layout:'jquery/layout/jquery.layout-latest',
+        layoutresizePaneAccordions:'jquery/layout/jquery.layout.resizePaneAccordions-latest',
+        layoutthemeswitchertool:'jquery/layout/themeswitchertool'
     },
     shim:{
         'jqueryui':['jquery'],
@@ -38,7 +41,8 @@ requirejs.config({
     	'ckeditor':['CKConfig'],
     	'validationEnginezn':['jquery'],
     	'validationEngine':['jquery','validationEnginezn'],
-    	'validation':['jquery','validationEngine']
+    	'validation':['jquery','validationEngine'],
+    	'layout':['jquery'],
     }
 });
 requirejs(['jquery']);
