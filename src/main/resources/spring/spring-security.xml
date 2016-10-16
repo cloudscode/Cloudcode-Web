@@ -30,7 +30,7 @@
          <security:frame-options disabled="true"></security:frame-options>
         </security:headers>
          <!-- logout-success-url:成功注销后跳转到的页面; -->
-         <security:logout logout-url="/j_spring_security_logout"  logout-success-url="/login.action"   invalidate-session="true" />
+         <security:logout logout-url="/j_spring_security_logout"  logout-success-url="/login.html"   invalidate-session="true" />
  
 	</security:http> 
     
