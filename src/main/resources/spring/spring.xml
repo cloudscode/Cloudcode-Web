@@ -30,6 +30,8 @@
 	<import resource="spring-security.xml"/>	
 	<import resource="applicationContext-cxf.xml" />
 	<import resource="spring-mongodb.xml" />
+	<import resource="system-spring.xml" />
+	<!-- <import resource="classpath*:/spring-activemq.xml" /> -->
 	<bean
 		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer" />
 	<context:annotation-config />

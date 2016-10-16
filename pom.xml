@@ -44,6 +44,11 @@
 			<artifactId>Cloudcode-Workflow</artifactId>
 			<version>0.0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.cloudcode</groupId>
+			<artifactId>Cloudcode-Framework</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>cloudcode-webs</finalName>

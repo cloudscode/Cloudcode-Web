@@ -12,6 +12,7 @@
 		<security:intercept-url pattern="/login.html"  access="IS_AUTHENTICATED_ANONYMOUSLY" />  
 		<security:intercept-url pattern="/captcha"  access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/resources/**"   access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/wf/**"   access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<security:intercept-url pattern="/**/*.jsp" access="ROLE_ROOT" /><!--禁止直接访问jsp-->
 		<security:intercept-url pattern="/**" access="ROLE_USER" />
 		
@@ -21,13 +22,16 @@
 		
 		<security:custom-filter ref="usernamePasswordFilter" position="FORM_LOGIN_FILTER" />
 
-		<security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER" />
+		<!-- <security:custom-filter ref="logoutFilter" position="LOGOUT_FILTER" /> -->
 
 		<!-- <security:csrf token-repository-ref="csrfTokenRepository" /> -->
 		<security:csrf disabled="true" />
 		 <security:headers>
          <security:frame-options disabled="true"></security:frame-options>
         </security:headers>
+         <!-- logout-success-url:成功注销后跳转到的页面; -->
+         <security:logout logout-url="/j_spring_security_logout"  logout-success-url="/login.action"   invalidate-session="true" />
+ 
 	</security:http> 
     
     <bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">  

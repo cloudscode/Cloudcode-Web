@@ -46,7 +46,7 @@ public abstract class FormattedLogger implements P6Logger {
   }
   public void logSQL(int connectionId, String now, long elapsed,
 		  Category category, String prepared, String sql) {
-		if ("statement".equals(category.toString())) {
+//		if ("statement".equals(category.toString())) {
 			String logEntry =
 			// now + "|" +
 			"耗时：" + elapsed + "毫秒；数据连接："
@@ -55,7 +55,7 @@ public abstract class FormattedLogger implements P6Logger {
 					// + "|" + prepared
 					+ "；SQL语句：\n" + sql;
 			logText(logEntry);
-		}
+//		}
   }
   public void setLastEntry(String inVar) {
 		lastEntry = inVar;
