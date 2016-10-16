@@ -30,7 +30,9 @@ requirejs.config({
         combobox:'widgets/combobox/combobox',
         layout:'jquery/layout/jquery.layout-latest',
         layoutresizePaneAccordions:'jquery/layout/jquery.layout.resizePaneAccordions-latest',
-        layoutthemeswitchertool:'jquery/layout/themeswitchertool'
+        layoutthemeswitchertool:'jquery/layout/themeswitchertool',
+        echarts:'echarts/3.2.3/echarts',
+        highcharts:'highcharts/5.0.0/highcharts'
     },
     shim:{
         'jqueryui':['jquery'],
@@ -43,6 +45,7 @@ requirejs.config({
     	'validationEngine':['jquery','validationEnginezn'],
     	'validation':['jquery','validationEngine'],
     	'layout':['jquery'],
+    	'highcharts':['jquery'],
     }
 });
 requirejs(['jquery']);
